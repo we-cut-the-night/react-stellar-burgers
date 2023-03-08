@@ -1,11 +1,15 @@
+import AppHeader from '../app-header/app-header'
+import BurgerIngredients from '../burger-ingredients/burger-ingridients'
+import BurgerConstructor from '../burger-constructor/burger-constructor'
+import {data} from '../../utils/data'
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        Stellar burgers
-      </header>
+      <AppHeader />
+      <BurgerIngredients ingridients={data} />
+      <BurgerConstructor />
     </div>
   );
 }
