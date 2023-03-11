@@ -13,3 +13,28 @@
   align-items: center;
   position: relative;
 }
+
+.appheader__navElement {
+  display: flex;
+}
+
+.appheader__navLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  transition: .1s;
+  text-decoration: none;
+}
+
+.appheader__navLink:hover {
+  cursor: pointer;
+}
+
+.appheader__navLink__text {
+  color: #F2F2F3;
+}
+
+.appheader__navLink__text_inactive {
+  color: #8585ad;
+}

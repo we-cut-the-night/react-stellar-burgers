@@ -4,4 +4,13 @@
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
+  color: #F2F2F3;
+}
+
+@media screen and (max-width: 1260px) {
+  .main {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
 }

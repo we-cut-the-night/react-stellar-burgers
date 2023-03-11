@@ -1,0 +1,33 @@
+.ingridientDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ingridientDetailsTitle {
+  line-height: 40px;
+}
+
+.ingridientDetailsName {
+  text-align: center;
+}
+
+.ingridientDetailsList {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  gap: 20px;
+}
+
+.detailsListItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detailsItemValue {
+  color: #8585ad;
+  text-align: center;
+}
