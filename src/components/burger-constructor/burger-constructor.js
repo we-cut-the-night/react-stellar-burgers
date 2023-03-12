@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { ingridientTypes } from '../../utils/constants'
+import { ingredientPropType } from '../../utils/types'
 import {
   Button,
   DragIcon,
@@ -12,9 +13,8 @@ import styles from './burger-constructor.module.css'
 
 function BurgerConstructor({ data, onClick }) {
   const [order, setOrder] = useState({
-    top: {},
+    buns: {},
     middle: [],
-    bottom: {},
   })
   const [totalPrice, setTotalPrice] = useState(0)
 
@@ -24,37 +24,36 @@ function BurgerConstructor({ data, onClick }) {
     const mainList = data.filter(item => item.type === ingridientTypes[2].type)
 
     data.length && setOrder({
-      top: bunList[1],
+      buns: bunList[1],
       middle: [sauceList[1], mainList[8], mainList[1], mainList[8], sauceList[1], mainList[8]
       ],
-      bottom: bunList[0],
     })
   }, [data])
 
   useEffect(() => {
-    const priceTop = order.top.price ? order.top.price : 0
+    const priceBun = order.buns.price ? order.buns.price : 0
     const priceMiddle = order.middle.lenth ? order.middle.reduce((sum, item) => sum = sum + item.price, 0) : 0
-    const priceBottom = order.bottom.price ? order.bottom.price : 0
-    setTotalPrice(priceTop + priceMiddle + priceBottom)
+    setTotalPrice(priceBun * 2 + priceMiddle)
   }, [order])
 
   return (
     <section className={`${styles.burgerConstructor} pt-25`}>
-      {order.top.name && (
+      {order.buns.name && (
         <div className={`${styles.burgerConstructor__item} mr-4 mb-4 pl-8`}>
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={`${order.top.name} (верх)`}
-            price={order.top.price}
-            thumbnail={order.top.image}
+            text={`${order.buns.name} (верх)`}
+            price={order.buns.price}
+            thumbnail={order.buns.image}
           />
         </div>
       )}
       <ul className={`${styles.burgerConstructor__itemList}`}>
         {order.middle.map((item, i) => {
           return (
-            <div key={i} className={`${styles.burgerConstructor__item} mr-4 mb-4`}>
+            // в одном заказе может быть несколько одинаковых ингридиентов
+            <div key={i + item._id} className={`${styles.burgerConstructor__item} mr-4 mb-4`}>
               <div className='mr-2'>
                 <DragIcon type='primary' />
               </div>
@@ -68,14 +67,14 @@ function BurgerConstructor({ data, onClick }) {
         })
         }
       </ul>
-      {order.bottom.name && (
+      {order.buns.name && (
         <div className={`${styles.burgerConstructor__item} mt-4 mr-4 pl-8`}>
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={`${order.bottom.name} (низ)`}
-            price={order.bottom.price}
-            thumbnail={order.bottom.image}
+            text={`${order.buns.name} (низ)`}
+            price={order.buns.price}
+            thumbnail={order.buns.image}
           />
         </div>
       )}
@@ -84,38 +83,18 @@ function BurgerConstructor({ data, onClick }) {
           {totalPrice && totalPrice}
         </p>
         <div className={`${styles.burgerConstructor__priceCurrency} mr-10`}>
-        <CurrencyIcon type='primary' />
+          <CurrencyIcon type='primary' />
         </div>
-        {totalPrice ? (
-          <Button htmlType='button' type='primary' size='large' onClick={onClick}>
-            Оформить заказ
-          </Button>
-        ) : (
-          <Button htmlType='button' type='primary' size='large' disabled>
-            Оформить заказ
-          </Button>
-        )}
+        <Button htmlType='button' type='primary' size='large' onClick={onClick} disabled={!totalPrice}>
+          Оформить заказ
+        </Button>
       </div>
     </section>
   )
 }
 
-const constructorPropTypes = PropTypes.shape({
-  _id: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string,
-  image_large: PropTypes.string,
-  calories: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-});
-
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(constructorPropTypes),
+  data: PropTypes.arrayOf(ingredientPropType),
   onClick: PropTypes.func,
 };
 

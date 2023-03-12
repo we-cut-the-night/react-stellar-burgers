@@ -9,17 +9,19 @@ import Modal from '../modal/modal';
 
 import styles from './app.module.css'
 
+const defaultIngredient = {
+  image_large: '',
+  name: '',
+  calories: 0,
+  carbohydrates: 0,
+  proteins: 0,
+  fat: 0,
+}
+
 function App() {
   const [ingridientsData, setIngridientsData] = useState([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [modalItemIngridient, setModalItemIngidient] = useState({
-    image_large: '',
-    name: '',
-    calories: 0,
-    carbohydrates: 0,
-    proteins: 0,
-    fat: 0,
-  })
+  const [modalItemIngridient, setModalItemIngidient] = useState(defaultIngredient)
   const [modalItemOrder, setModalItemOrder] = useState(null)
 
   const getBurgerData = () => {
@@ -31,14 +33,7 @@ function App() {
   const closeModal = () => {
     setModalIsOpen(false)
     setModalItemOrder(null)
-    setModalItemIngidient({
-      image_large: '',
-      name: '',
-      calories: 0,
-      carbohydrates: 0,
-      proteins: 0,
-      fat: 0,
-    })
+    setModalItemIngidient(defaultIngredient)
   }
 
   const handleItemClick = (item) => {
@@ -75,4 +70,4 @@ function App() {
   );
 }
 
-export default App;
+export default App

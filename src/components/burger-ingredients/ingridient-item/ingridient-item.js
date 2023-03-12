@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import {ingredientPropType} from '../../../utils/types'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import style from './ingridient-item.module.css'
 
@@ -23,22 +24,8 @@ function IngredientItem({ item, onClick }) {
   )
 }
 
-const constructorPropTypes = PropTypes.shape({
-  _id: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string,
-  image_large: PropTypes.string,
-  calories: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-})
-
 IngredientItem.propTypes = {
-  item: constructorPropTypes,
+  item: ingredientPropType,
   onClick: PropTypes.func,
 }
 

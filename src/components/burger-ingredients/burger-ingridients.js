@@ -4,12 +4,13 @@ import IngredientType from './ingridient-type/ingridient-type'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingridients.module.css'
 import { ingridientTypes } from '../../utils/constants'
+import { ingredientPropType } from '../../utils/types'
 
 function BurgerIngredients({ data, onClick }) {
   const [current, setCurrent] = useState(ingridientTypes[0].type)
   const handleClickTab = (type) => {
     setCurrent(type)
-    document.querySelector(`#${type}`).scrollIntoView()
+    document.querySelector(`#${type}`).scrollIntoView({behavior: 'smooth'})
   }
 
   return (
@@ -37,7 +38,7 @@ function BurgerIngredients({ data, onClick }) {
         {ingridientTypes.map((item, i) => {
           const filteredData = data.filter(ingridient => ingridient.type === item.type)
           return (
-            <IngredientType key={i} id={item.type} title={item.title} items={filteredData} onClick={onClick}/>
+            <IngredientType key={i} id={item.type} title={item.title} items={filteredData} onClick={onClick} />
           )
         })}
       </ul>
@@ -45,22 +46,8 @@ function BurgerIngredients({ data, onClick }) {
   )
 }
 
-const constructorPropTypes = PropTypes.shape({
-  _id: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string,
-  image_large: PropTypes.string,
-  calories: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  proteins: PropTypes.number,
-  fat: PropTypes.number,
-})
-
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(constructorPropTypes),
+  data: PropTypes.arrayOf(ingredientPropType),
   onClick: PropTypes.func,
 }
 
