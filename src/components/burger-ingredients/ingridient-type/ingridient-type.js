@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
+import { forwardRef } from 'react'
 import IngredientItem from '../ingridient-item/ingridient-item'
 import { ingredientPropType } from '../../../utils/types'
 import styles from './ingridient-type.module.css'
 
-function IngredientType({ id, title, items, onClick }) {
+const IngredientType = forwardRef(({ id, title, items, onClick }, ref) => {
   return (
-    <li id={id}>
+    <li id={id} ref={ref}>
       <h3 className='text text_type_main-medium'>{title}</h3>
       <ul className={`${styles.ingridientList} pt-6 pb-10 pl-4 pr-4`}>
         {items.map(item => {
@@ -16,7 +17,7 @@ function IngredientType({ id, title, items, onClick }) {
       </ul>
     </li>
   )
-}
+})
 
 IngredientType.propTypes = {
   id: PropTypes.string.isRequired,

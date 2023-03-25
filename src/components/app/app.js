@@ -4,8 +4,11 @@ import BurgerIngredients from '../burger-ingredients/burger-ingridients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import IngridientDetails from '../burger-ingredients/ingridient-details/ingridient-details';
 import OrderDetails from '../burger-constructor/order-details/order-details'
-import { getIngridientsData } from '../../utils/api'
-import Modal from '../modal/modal';
+import Modal from '../modal/modal'
+import { useDispatch } from 'react-redux'
+import { getIngredients } from '../../services/api'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import styles from './app.module.css'
 
@@ -19,16 +22,10 @@ const defaultIngredient = {
 }
 
 function App() {
-  const [ingridientsData, setIngridientsData] = useState([])
+  const dispatch = useDispatch()
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalItemIngridient, setModalItemIngidient] = useState(defaultIngredient)
   const [modalItemOrder, setModalItemOrder] = useState(null)
-
-  const getBurgerData = () => {
-    getIngridientsData()
-      .then(res => setIngridientsData(res.data))
-      .catch(err => console.log('Ошибка: ', err))
-  }
 
   const closeModal = () => {
     setModalIsOpen(false)
@@ -46,14 +43,18 @@ function App() {
     setModalIsOpen(true)
   }
 
-  useEffect(() => getBurgerData(), [])
+  useEffect(() => {
+    dispatch(getIngredients())
+  }, [dispatch])
 
   return (
     <>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients data={ingridientsData} onClick={handleItemClick} />
-        <BurgerConstructor data={ingridientsData} onClick={handleOrderClick}/>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients onClick={handleItemClick} />
+          <BurgerConstructor onClick={handleOrderClick} />
+        </DndProvider>
       </main>
       {modalIsOpen && (
         <Modal onClose={closeModal}>

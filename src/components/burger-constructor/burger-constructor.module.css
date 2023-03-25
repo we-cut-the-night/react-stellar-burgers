@@ -2,6 +2,9 @@
   width: 600px;
 }
 
+.burgerConstructorHovering {
+  border: 3px solid rgba(76, 76, 255, .9);
+}
 
 .burgerConstructor__itemList {
   margin: 0;

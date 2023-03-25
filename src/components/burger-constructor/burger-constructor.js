@@ -8,37 +8,71 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { useDrop } from 'react-dnd'
+import { CHANGE_INGREDIENTS } from '../../services/actions'
 import styles from './burger-constructor.module.css'
 
-function BurgerConstructor({ data, onClick }) {
+function BurgerConstructor({ onClick }) {
+  const dispatch = useDispatch()
+  const { constructor } = useSelector(store => store.burgerConstructor)
+
   const [order, setOrder] = useState({
     buns: {},
     middle: [],
   })
   const [totalPrice, setTotalPrice] = useState(0)
+  const date = new Date()
+
+  const handleDrop = (item) => {
+    const timeId = date.getTime();
+
+    if (item.type === ingridientTypes[0].type) {
+      dispatch({
+        type: CHANGE_INGREDIENTS,
+        constructor: [
+          ...constructor.filter(item => item.type === ingridientTypes[0].type ? null : item), { ...item, timeId }
+        ]
+      })
+    } else {
+      dispatch({
+        type: CHANGE_INGREDIENTS,
+        constructor: [...constructor, { ...item, timeId }]
+      })
+    }
+  }
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    }),
+    drop(item) {
+      handleDrop(item);
+    }
+  })
 
   useEffect(() => {
-    const bunList = data.filter(item => item.type === ingridientTypes[0].type)
-    const sauceList = data.filter(item => item.type === ingridientTypes[1].type)
-    const mainList = data.filter(item => item.type === ingridientTypes[2].type)
+    const buns = constructor.filter(item => item.type === ingridientTypes[0].type)
+    const middle = constructor.filter(item => item.type !== ingridientTypes[0].type)
 
-    data.length && setOrder({
-      buns: bunList[1],
-      middle: [sauceList[1], mainList[8], mainList[1], mainList[8], sauceList[1], mainList[8]
-      ],
+    constructor.length && setOrder({
+      buns: buns[0],
+      middle: middle,
     })
-  }, [data])
+  }, [constructor])
 
   useEffect(() => {
-    const priceBun = order.buns.price ? order.buns.price : 0
-    const priceMiddle = order.middle.lenth ? order.middle.reduce((sum, item) => sum = sum + item.price, 0) : 0
+    const priceBun = order.buns?.price ? order.buns.price : 0
+    const priceMiddle = order.middle?.lenth ? order.middle.reduce((sum, item) => sum = sum + item.price, 0) : 0
     setTotalPrice(priceBun * 2 + priceMiddle)
   }, [order])
 
   return (
-    <section className={`${styles.burgerConstructor} pt-25`}>
-      {order.buns.name && (
+    <section ref={dropTarget} className={`${styles.burgerConstructor} pt-25 ${
+      isHover && styles.burgerConstructorHovering
+    }`}>
+      {order.buns?.name && (
         <div className={`${styles.burgerConstructor__item} mr-4 mb-4 pl-8`}>
           <ConstructorElement
             type='top'
@@ -50,7 +84,7 @@ function BurgerConstructor({ data, onClick }) {
         </div>
       )}
       <ul className={`${styles.burgerConstructor__itemList}`}>
-        {order.middle.map((item, i) => {
+        {order.middle?.map((item, i) => {
           return (
             // в одном заказе может быть несколько одинаковых ингридиентов
             <div key={i + item._id} className={`${styles.burgerConstructor__item} mr-4 mb-4`}>
@@ -67,7 +101,7 @@ function BurgerConstructor({ data, onClick }) {
         })
         }
       </ul>
-      {order.buns.name && (
+      {order.buns?.name && (
         <div className={`${styles.burgerConstructor__item} mt-4 mr-4 pl-8`}>
           <ConstructorElement
             type='bottom'
@@ -94,7 +128,7 @@ function BurgerConstructor({ data, onClick }) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType),
+  ingredientsAll: PropTypes.arrayOf(ingredientPropType),
   onClick: PropTypes.func,
 };
 
