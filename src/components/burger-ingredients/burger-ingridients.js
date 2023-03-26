@@ -8,7 +8,7 @@ import { ingredientPropType } from '../../utils/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { SET_INGRIDIENT_TAB } from '../../services/actions'
 
-function BurgerIngredients({ onClick }) {
+function BurgerIngredients() {
   const dispatch = useDispatch()
   const { ingredientsAll } = useSelector(store => store.burgerIngredients)
   const { currentIngredientTab } = useSelector(store => store.burgerIngredients)
@@ -74,7 +74,7 @@ function BurgerIngredients({ onClick }) {
           else if (item.type === ingridientTypes[2].type) {ref = main}
 
           return (
-            <IngredientType key={i} id={item.type} ref={ref} title={item.title} items={filteredData} onClick={onClick} />
+            <IngredientType key={i} id={item.type} ref={ref} title={item.title} items={filteredData} />
           )
         })}
       </ul>

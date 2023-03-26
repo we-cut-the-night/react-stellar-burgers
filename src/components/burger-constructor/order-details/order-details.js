@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux'
 import Accepted from '../../../images/accepted.png'
 import styles from './order-details.module.css'
 
-function OrderDetails({ id }) {
+function OrderDetails() {
+  const { order } = useSelector(store => store.order)
+
   return (
     <div className={`${styles.orderDetails} pt-30 pb-30`}>
-      <h2 className='text text_type_digits-large'>{id}</h2>
+      <h2 className='text text_type_digits-large'>{order.number}</h2>
       <p className='mt-8 mb-15 text text_type_main-medium'>идентификатор заказа</p>
       <img
         className={styles.orderImage}
@@ -21,9 +24,5 @@ function OrderDetails({ id }) {
     </div>
   )
 }
-
-OrderDetails.propTypes = {
-  id: PropTypes.string.isRequired,
-};
 
 export default OrderDetails

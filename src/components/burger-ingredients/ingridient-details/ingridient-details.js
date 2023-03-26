@@ -1,23 +1,26 @@
-import {ingredientPropType} from '../../../utils/types'
+import { useSelector } from 'react-redux'
+import { ingredientPropType } from '../../../utils/types'
 import style from './ingridient-details.module.css'
 
-function IngridientDetails({ item }) {
+function IngridientDetails() {
+  const { ingredientDetails } = useSelector(store => store.ingredientDetails)
+
   const ingridientValue = [
     {
       title: 'Калории, ккал',
-      value: item.calories
+      value: ingredientDetails.calories
     },
     {
       title: 'Белки, г',
-      value: item.proteins
+      value: ingredientDetails.proteins
     },
     {
       title: 'Жиры, г',
-      value: item.fat
+      value: ingredientDetails.fat
     },
     {
       title: 'Углеводы, г',
-      value: item.carbohydrates
+      value: ingredientDetails.carbohydrates
     },
   ]
 
@@ -26,9 +29,9 @@ function IngridientDetails({ item }) {
       <h2 className={`${style.ingridientDetailsTitle} text text_type_main-large`}>
         Детали ингредиента
       </h2>
-      <img src={item.image_large} alt={item.name} />
+      <img src={ingredientDetails.image_large} alt={ingredientDetails.name} />
       <p className={`${style.ingridientDetailsName} mt-4 mb-8 text text_type_main-medium`}>
-        {item.name}
+        {ingredientDetails.name}
       </p>
       <ul className={`${style.ingridientDetailsList} mb-5`}>
         {

@@ -2,15 +2,20 @@ import PropTypes from 'prop-types'
 import {ingredientPropType} from '../../../utils/types'
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import {OPEN_INGREDIENT_DETAILS} from '../../../services/actions'
 import style from './ingridient-item.module.css'
 
-function IngredientItem({ item, onClick }) {
+function IngredientItem({ item }) {
+  const dispatch = useDispatch()
   const { constructor } = useSelector(store => store.burgerConstructor)
-  const amount = constructor.filter(i => i._id === item._id).length
+  const amount = constructor?.filter(i => i._id === item._id).length
 
   const handleClickItem = () => {
-    onClick(item)
+    dispatch({
+      type: OPEN_INGREDIENT_DETAILS,
+      ingredientDetails: item
+    })
   }
 
   const [, dragRef] = useDrag({
