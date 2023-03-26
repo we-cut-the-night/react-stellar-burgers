@@ -1,21 +1,20 @@
 import { useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrop, useDrag } from 'react-dnd'
-import {CHANGE_INGREDIENTS} from '../../../services/actions'
+import { UPDATE_INGREDIENTS, REMOVE_INGREDIENT } from '../../../services/actions'
 import styles from './constructor-item.module.css'
 
 function ConstructorItem({ index, data, order }) {
   const ref = useRef(null)
   const dispatch = useDispatch()
-  const { constructor } = useSelector(store => store.burgerConstructor)
   const middle = order.middle
   const buns = [order.buns]
 
   function handleDeleteItem() {
     dispatch({
-      type: CHANGE_INGREDIENTS,
-      constructor: constructor.filter(item => item.timeId === data.timeId ? null : item)
+      type: REMOVE_INGREDIENT,
+      id: data.timeId
     })
   }
 
@@ -27,7 +26,7 @@ function ConstructorItem({ index, data, order }) {
     middle[indexHover] = dragItem
 
     dispatch({
-      type: CHANGE_INGREDIENTS,
+      type: UPDATE_INGREDIENTS,
       constructor: [...buns, ...middle]
     })
   }

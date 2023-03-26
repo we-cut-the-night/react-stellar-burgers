@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { ingridientTypes } from '../../utils/constants'
-import { ingredientPropType } from '../../utils/types'
 import {
   Button,
   ConstructorElement,
@@ -9,38 +7,26 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useDrop } from 'react-dnd'
-import { CHANGE_INGREDIENTS } from '../../services/actions'
+import { ADD_INGREDIENT } from '../../services/actions'
 import { handleOrder } from '../../services/api'
 import ConstructorItem from './constructor-item/constructor-item'
 import styles from './burger-constructor.module.css'
 
 function BurgerConstructor() {
   const dispatch = useDispatch()
-  const { constructor } = useSelector(store => store.burgerConstructor)
+  const constructor = useSelector(store => store.burgerConstructor.constructor)
 
   const [order, setOrder] = useState({
     buns: {},
     middle: [],
   })
   const [totalPrice, setTotalPrice] = useState(0)
-  const date = new Date()
 
   const handleDrop = (item) => {
-    const timeId = date.getTime();
-
-    if (item.type === ingridientTypes[0].type) {
-      dispatch({
-        type: CHANGE_INGREDIENTS,
-        constructor: [
-          ...constructor.filter(item => item.type === ingridientTypes[0].type ? null : item), { ...item, timeId }
-        ]
-      })
-    } else {
-      dispatch({
-        type: CHANGE_INGREDIENTS,
-        constructor: [...constructor, { ...item, timeId }]
-      })
-    }
+    dispatch({
+      type: ADD_INGREDIENT,
+      item: item,
+    })
   }
 
   const handleOrderClick = () => {
@@ -133,10 +119,5 @@ function BurgerConstructor() {
     </section>
   )
 }
-
-BurgerConstructor.propTypes = {
-  ingredientsAll: PropTypes.arrayOf(ingredientPropType),
-  onClick: PropTypes.func,
-};
 
 export default BurgerConstructor

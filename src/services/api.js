@@ -4,7 +4,7 @@ import {
   INGREDIENTS_ALL_SUCCESS,
   INGREDIENTS_ALL_FAIL,
   ORDER_SUCCESS,
-  CHANGE_INGREDIENTS,
+  RESET_INGREDIENTS,
   ORDER_FAIL,
 } from './actions/index'
 
@@ -38,11 +38,10 @@ export const handleOrder = (data) => {
           dispatch({
             type: ORDER_SUCCESS,
             order: res.order
-          });
+          })
           dispatch({
-            type: CHANGE_INGREDIENTS,
-            constructor: []
-          });
+            type: RESET_INGREDIENTS,
+          })
         } else {
           dispatch({ type: ORDER_FAIL });
         }

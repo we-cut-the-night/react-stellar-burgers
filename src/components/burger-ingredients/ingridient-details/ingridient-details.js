@@ -3,7 +3,7 @@ import { ingredientPropType } from '../../../utils/types'
 import style from './ingridient-details.module.css'
 
 function IngridientDetails() {
-  const { ingredientDetails } = useSelector(store => store.ingredientDetails)
+  const ingredientDetails = useSelector(store => store.ingredientDetails.ingredientDetails)
 
   const ingridientValue = [
     {

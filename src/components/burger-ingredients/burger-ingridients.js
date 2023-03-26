@@ -10,7 +10,7 @@ import { SET_INGRIDIENT_TAB } from '../../services/actions'
 
 function BurgerIngredients() {
   const dispatch = useDispatch()
-  const { ingredientsAll } = useSelector(store => store.burgerIngredients)
+  const ingredientsAll = useSelector(store => store.burgerIngredients.ingredientsAll)
   const { currentIngredientTab } = useSelector(store => store.burgerIngredients)
   const ingridientList = useRef(null);
   const bun = useRef(null);
@@ -18,6 +18,14 @@ function BurgerIngredients() {
   const main = useRef(null);
 
   const handleClickTab = (type) => document.querySelector(`#${type}`).scrollIntoView({ behavior: 'smooth' })
+  const filterData = (data, type) => data.filter(ingridient => ingridient.type === type)
+  const calcRefType = (type) => {
+    let ref = null
+    if (type === ingridientTypes[0].type) { ref = bun }
+    else if (type === ingridientTypes[1].type) { ref = sauce }
+    else if (type === ingridientTypes[2].type) { ref = main }
+    return ref
+  }
 
   const handleScrollIngredients = () => {
 
@@ -29,9 +37,9 @@ function BurgerIngredients() {
       const minDelta = Math.min(bunDelta, sauceDelta, mainDelta)
 
       let tab = null
-      if (minDelta === bunDelta) {tab = ingridientTypes[0].type}
-      else if (minDelta === sauceDelta) {tab = ingridientTypes[1].type}
-      else if (minDelta === mainDelta) {tab = ingridientTypes[2].type}
+      if (minDelta === bunDelta) { tab = ingridientTypes[0].type }
+      else if (minDelta === sauceDelta) { tab = ingridientTypes[1].type }
+      else if (minDelta === mainDelta) { tab = ingridientTypes[2].type }
 
       dispatch({
         type: SET_INGRIDIENT_TAB,
@@ -66,17 +74,15 @@ function BurgerIngredients() {
         className={`${styles.burgerIngridients__typeList} mt-10`}
         onScroll={handleScrollIngredients}
       >
-        {ingridientTypes.map((item, i) => {
-          const filteredData = ingredientsAll.filter(ingridient => ingridient.type === item.type)
-          let ref = null
-          if (item.type === ingridientTypes[0].type) {ref = bun}
-          else if (item.type === ingridientTypes[1].type) {ref = sauce}
-          else if (item.type === ingridientTypes[2].type) {ref = main}
-
-          return (
-            <IngredientType key={i} id={item.type} ref={ref} title={item.title} items={filteredData} />
-          )
-        })}
+        {ingridientTypes.map((item, i) =>
+          <IngredientType
+            key={i}
+            id={item.type}
+            ref={calcRefType(item.type)}
+            title={item.title}
+            items={filterData(ingredientsAll, item.type)}
+          />
+        )}
       </ul>
     </section>
   )
