@@ -1,5 +1,9 @@
 import {BASE_URL} from './constants'
 
+const headers = {
+  'Content-Type': 'application/json',
+}
+
 const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
@@ -11,11 +15,18 @@ const checkResponse = (res) => {
 };
 
 export const getIngridientsData = () => {
-  return fetch(`${BASE_URL}/api/ingredients`, {
+  return fetch(`${BASE_URL}/ingredients`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: headers,
   })
   .then(checkResponse)
+}
+
+export const postOrder = (data) => {
+  return fetch(`${BASE_URL}/orders`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data)
+  })
+    .then(checkResponse)
 }

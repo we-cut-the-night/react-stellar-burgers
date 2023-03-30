@@ -1,67 +1,55 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AppHeader from '../app-header/app-header'
 import BurgerIngredients from '../burger-ingredients/burger-ingridients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import IngridientDetails from '../burger-ingredients/ingridient-details/ingridient-details';
 import OrderDetails from '../burger-constructor/order-details/order-details'
-import { getIngridientsData } from '../../utils/api'
-import Modal from '../modal/modal';
-
+import Modal from '../modal/modal'
+import { useDispatch, useSelector } from 'react-redux'
+import { getIngredients } from '../../services/api'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { ORDER_CLOSE, CLOSE_INGREDIENT_DETAILS} from '../../services/actions'
 import styles from './app.module.css'
 
-const defaultIngredient = {
-  image_large: '',
-  name: '',
-  calories: 0,
-  carbohydrates: 0,
-  proteins: 0,
-  fat: 0,
-}
-
 function App() {
-  const [ingridientsData, setIngridientsData] = useState([])
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [modalItemIngridient, setModalItemIngidient] = useState(defaultIngredient)
-  const [modalItemOrder, setModalItemOrder] = useState(null)
-
-  const getBurgerData = () => {
-    getIngridientsData()
-      .then(res => setIngridientsData(res.data))
-      .catch(err => console.log('Ошибка: ', err))
-  }
+  const dispatch = useDispatch()
+  const ingredientDetailsIsOpen = useSelector(store => store.ingredientDetails.isOpen)
+  const orderIsOpen = useSelector(store => store.order.isOpen)
 
   const closeModal = () => {
-    setModalIsOpen(false)
-    setModalItemOrder(null)
-    setModalItemIngidient(defaultIngredient)
+
+    if (orderIsOpen) {
+      dispatch({
+        type: ORDER_CLOSE,
+      })
+    } else if (ingredientDetailsIsOpen) {
+      dispatch({
+        type: CLOSE_INGREDIENT_DETAILS,
+      })
+    }
   }
 
-  const handleItemClick = (item) => {
-    setModalItemIngidient(item)
-    setModalIsOpen(true)
-  }
-
-  const handleOrderClick = () => {
-    setModalItemOrder('034536')
-    setModalIsOpen(true)
-  }
-
-  useEffect(() => getBurgerData(), [])
+  useEffect(() => {
+    dispatch(getIngredients())
+  }, [dispatch])
 
   return (
     <>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients data={ingridientsData} onClick={handleItemClick} />
-        <BurgerConstructor data={ingridientsData} onClick={handleOrderClick}/>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
-      {modalIsOpen && (
+      {(orderIsOpen || ingredientDetailsIsOpen) && (
         <Modal onClose={closeModal}>
           {
-            modalItemOrder ? (
-              <OrderDetails id={modalItemOrder} />
-            ) : modalItemIngridient?.name && (
-              <IngridientDetails item={modalItemIngridient} />
+            orderIsOpen ? (
+              <OrderDetails />
+            ) : ingredientDetailsIsOpen && (
+              <IngridientDetails />
             )
           }
         </Modal>
