@@ -28,11 +28,13 @@ function AppHeader() {
           </div>
         </div>
         <Logo />
-        <div className={`${styles.appheader__navLink} pt-4 pb-4 pl-5 pr-5`}>
-          <ProfileIcon type={currentPage === 'lk' ? 'primary' : 'secondary'} />
-          <p className={`${currentPage === 'lk' ? styles.appheader__navLink__text : styles.appheader__navLink__text_inactive} text text_type_main-default ml-2`}>
-            Личный кабинет
-          </p>
+        <div className={styles.appheader__navElement}>
+          <div className={`${styles.appheader__navLink} pt-4 pb-4 pl-5 pr-5`}>
+            <ProfileIcon type={currentPage === 'lk' ? 'primary' : 'secondary'} />
+            <p className={`${currentPage === 'lk' ? styles.appheader__navLink__text : styles.appheader__navLink__text_inactive} text text_type_main-default ml-2`}>
+              Личный кабинет
+            </p>
+          </div>
         </div>
       </nav>
     </header>

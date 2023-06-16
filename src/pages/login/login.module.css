@@ -1,0 +1,46 @@
+:global(.input__error) {
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.content {
+  margin-top: 170px;
+  width: 480px;
+}
+
+.header {
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonSubmit {
+  align-self: center;
+}
+
+.navigate {
+  text-align: center;
+  color: #8585ad;
+}
+
+.navigateLink{
+  text-decoration: none;
+  color: #4c4cff;
+  cursor: pointer;
+  transition: opacity .4s;
+}
+
+.navigateLink:hover {
+  opacity: .8;
+}

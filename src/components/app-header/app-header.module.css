@@ -16,6 +16,8 @@
 
 .appheader__navElement {
   display: flex;
+  justify-content: flex-end;
+  min-width: 375px;
 }
 
 .appheader__navLink {

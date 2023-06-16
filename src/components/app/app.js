@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
-import AppHeader from '../app-header/app-header'
-import BurgerIngredients from '../burger-ingredients/burger-ingridients'
-import BurgerConstructor from '../burger-constructor/burger-constructor'
-import IngridientDetails from '../burger-ingredients/ingridient-details/ingridient-details';
-import OrderDetails from '../burger-constructor/order-details/order-details'
-import Modal from '../modal/modal'
 import { useDispatch, useSelector } from 'react-redux'
-import { getIngredients } from '../../services/api'
+import { Routes, Route } from 'react-router-dom'
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { ORDER_CLOSE, CLOSE_INGREDIENT_DETAILS} from '../../services/actions'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import Modal from 'components/modal/modal'
+import AppHeader from 'components/app-header/app-header'
+import BurgerIngredients from 'components/burger-ingredients/burger-ingridients'
+import BurgerConstructor from 'components/burger-constructor/burger-constructor'
+import IngridientDetails from 'components/burger-ingredients/ingridient-details/ingridient-details';
+import OrderDetails from 'components/burger-constructor/order-details/order-details'
+import { getIngredients } from 'services/api'
+import { ORDER_CLOSE, CLOSE_INGREDIENT_DETAILS } from 'services/actions'
 import styles from './app.module.css'
+import Login from 'pages/login/login'
+import Register from 'pages/register/register'
+import ForgotPassword from 'pages/forgot-password/forgot-password'
+import ResetPassword from 'pages/reset-password/reset-password'
 
 function App() {
   const dispatch = useDispatch()
@@ -37,12 +42,22 @@ function App() {
   return (
     <>
       <AppHeader />
-      <main className={styles.main}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
+      <Routes>
+        <Route path="/" element={
+          <main className={styles.main}>
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </DndProvider>
+          </main>
+        } />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/profile" element={<h2>Профиль</h2>} />
+        <Route path="*" element={<h2>Страница не найдена</h2>} />
+      </Routes>
       {(orderIsOpen || ingredientDetailsIsOpen) && (
         <Modal onClose={closeModal}>
           {
@@ -54,8 +69,7 @@ function App() {
           }
         </Modal>
       )}
-    </>
-  );
+    </>);
 }
 
 export default App
