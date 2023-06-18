@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import styles from './ingredient-details.module.css'
+import { getBurrentIngredients } from 'services/selectors'
 
 function IngredientDetails() {
   const { id } = useParams()
-  const { ingredientsAll } = useSelector(store => store.burgerIngredients)
+  const { ingredientsAll } = useSelector(getBurrentIngredients)
   const currentIngredient = ingredientsAll?.filter(item => item._id === id)[0]
 
   return (

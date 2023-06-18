@@ -2,14 +2,16 @@ import { useEffect } from 'react'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
-import styles from './login.module.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserData, login } from 'services/actions/auth'
+import { login } from 'services/actions/auth'
+import { urls } from 'utils/constants'
+import styles from './login.module.css'
+import { getStoreUserData } from 'services/selectors'
 
 function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { email } = useSelector(store => store.userData)
+  const { email } = useSelector(getStoreUserData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ email: '', password: '' })
 
   const handleFormSubmit = (event) => {
@@ -23,13 +25,12 @@ function Login() {
   }
 
   useEffect(() => {
-    dispatch(getUserData())
     resetFormValues({ email: '', password: '' })
   }, [dispatch, resetFormValues])
 
   if (email) {
     return (
-      <Navigate to="/" replace />
+      <Navigate to={urls.constructor} replace />
     )
   }
 

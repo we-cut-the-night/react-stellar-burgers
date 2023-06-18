@@ -2,14 +2,16 @@ import { useEffect } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
-import styles from './reset-password.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, resetPasswordEnd } from 'services/actions/auth'
+import { urls } from 'utils/constants'
+import styles from './reset-password.module.css'
+import { getStoreUserData } from 'services/selectors';
 
 function ResetPassword() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { email } = useSelector(store => store.userData)
+  const { email } = useSelector(getStoreUserData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ password: '', code: '' })
 
   const handleFormSubmit = (event) => {
@@ -27,7 +29,7 @@ function ResetPassword() {
 
   if (email) {
     return (
-      <Navigate to="/" replace />
+      <Navigate to={urls.constructor} replace />
     )
   }
 

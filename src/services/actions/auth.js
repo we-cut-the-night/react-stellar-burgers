@@ -107,19 +107,13 @@ export const resetPasswordEnd = (data, navigate) => {
 
 export const getUserData = () => {
   return function (dispatch) {
-    const token = 'Bearer ' + getCookies('accessToken')
-    getUser(token)
-      .then(res => {
-        dispatch({
-          type: SET_USER_DATA,
-          data: {
-            email: res.user.email,
-            name: res.user.name
-          }
-        });
-      })
-      .catch(err =>
-        refreshTokenAndGetUser(err)
+    const accessToken = getCookies('accessToken')
+    const refreshToken = localStorage.getItem('refreshToken')
+    if (!accessToken && !refreshToken) {
+      return
+    }
+    if (!accessToken && refreshToken) {
+      refreshTokenAndGetUser()
         .then(res => {
           dispatch({
             type: SET_USER_DATA,
@@ -130,6 +124,29 @@ export const getUserData = () => {
           });
         })
         .catch(err => console.log(`Error(getUserData): ${err}`))
+    }
+    getUser('Bearer ' + accessToken)
+      .then(res => {
+        dispatch({
+          type: SET_USER_DATA,
+          data: {
+            email: res.user.email,
+            name: res.user.name
+          }
+        });
+      })
+      .catch(() =>
+        refreshTokenAndGetUser()
+          .then(res => {
+            dispatch({
+              type: SET_USER_DATA,
+              data: {
+                email: res.user.email,
+                name: res.user.name
+              }
+            });
+          })
+          .catch(err => console.log(`Error(getUserData): ${err}`))
       )
   }
 }
@@ -149,25 +166,24 @@ export const updateUserData = (data) => {
       })
       .catch(err =>
         refreshTokenAndPatchUser(err, data)
-        .then(res => {
-          dispatch({
-            type: SET_USER_DATA,
-            data: {
-              email: res.user.email,
-              name: res.user.name
-            }
-          });
-        })
-        .catch(err => console.log(`Error(updateUserData): ${err}`))
+          .then(res => {
+            dispatch({
+              type: SET_USER_DATA,
+              data: {
+                email: res.user.email,
+                name: res.user.name
+              }
+            });
+          })
+          .catch(err => console.log(`Error(updateUserData): ${err}`))
       )
   }
 }
 
-const refreshTokenAndGetUser = async (err) => {
+const refreshTokenAndGetUser = async () => {
+  const data = { token: localStorage.getItem('refreshToken') }
 
-  if (err.status === 403) {
-
-    const data = { token: localStorage.getItem('refreshToken') }
+  if (data.token) {
     deleteCookies('accessToken')
 
     await postAuth(data, "token")
@@ -187,7 +203,7 @@ const refreshTokenAndGetUser = async (err) => {
 
     return res;
   } else {
-    return Promise.reject(err)
+    return Promise.reject()
   }
 }
 

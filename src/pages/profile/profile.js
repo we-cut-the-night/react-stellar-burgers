@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
 import ProfileNavigation from 'components/profile-navigation/profile-navigation'
-import { getUserData, updateUserData } from 'services/actions/auth'
+import { updateUserData } from 'services/actions/auth'
 import styles from './profile.module.css'
+import { getStoreUserData } from 'services/selectors'
 
 function Profile() {
   const dispatch = useDispatch()
-  const { loggedIn, name, email } = useSelector(store => store.userData)
+  const { loggedIn, name, email } = useSelector(getStoreUserData)
 
   const {
     formValues,
@@ -67,7 +68,6 @@ function Profile() {
 
   useEffect(() => {
     if (loggedIn) {
-      dispatch(getUserData())
       resetFormValues({ name: name, email: email, password: '' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -9,7 +9,6 @@ function ProfileNavigation() {
 
   const handleLogOut = (event) => {
     event.preventDefault()
-    console.log("handleLogOut")
     const data = { token: localStorage.getItem('refreshToken') }
     dispatch(logout(data, () => navigate('/login')))
   }

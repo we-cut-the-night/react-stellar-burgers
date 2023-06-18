@@ -6,12 +6,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { OPEN_INGREDIENT_DETAILS } from '../../../services/actions'
 import style from './ingridient-item.module.css'
 import { Link, useLocation } from 'react-router-dom'
+import { getBurgerConstructor } from 'services/selectors'
 
 function IngredientItem({ item }) {
   const dispatch = useDispatch()
   const location = useLocation()
   const id = item._id;
-  const { constructor } = useSelector(store => store.burgerConstructor)
+  const { constructor } = useSelector(getBurgerConstructor)
   const amount = constructor?.filter(i => i._id === item._id).length
 
   const handleClickItem = () => {

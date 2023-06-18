@@ -5,17 +5,15 @@ const headers = {
 }
 
 const checkResponse = (res) => {
-  // console.log('checkResponse', res)
   if (res.ok) {
-    return res.json();
+    return res.json()
   }
-  return Promise.reject(res);
-  // return res.json()
-  //   .then((data) => {
-  //     // cons
-  //     throw new Error(data.message);
-  //   });
-};
+  // return Promise.reject(res);
+  return res.json()
+    .then((data) => {
+      throw new Error(data.message)
+    });
+}
 
 export const getIngridientsData = () => {
   return fetch(`${BASE_URL}/ingredients`, {

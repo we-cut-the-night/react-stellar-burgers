@@ -11,10 +11,15 @@ import { ADD_INGREDIENT } from '../../services/actions'
 import { handleOrder } from '../../services/api'
 import ConstructorItem from './constructor-item/constructor-item'
 import styles from './burger-constructor.module.css'
+import { useNavigate } from 'react-router-dom'
+import { urls } from '../../utils/constants'
+import { getBurgerConstructor, getStoreUserData } from 'services/selectors'
 
 function BurgerConstructor() {
   const dispatch = useDispatch()
-  const constructor = useSelector(store => store.burgerConstructor.constructor)
+  const navigate = useNavigate()
+  const {constructor} = useSelector(getBurgerConstructor)
+  const { loggedIn } = useSelector(getStoreUserData)
 
   const [order, setOrder] = useState({
     buns: {},
@@ -30,8 +35,12 @@ function BurgerConstructor() {
   }
 
   const handleOrderClick = () => {
-    const ingredients = constructor.map(item => item._id)
-    dispatch(handleOrder({ ingredients }));
+    if (loggedIn) {
+      const ingredients = constructor.map(item => item._id)
+    dispatch(handleOrder({ ingredients }))
+    } else {
+      navigate(urls.login)
+    }
   }
 
   const [{ isHover }, dropTarget] = useDrop({

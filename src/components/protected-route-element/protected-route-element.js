@@ -3,16 +3,17 @@ import { Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getUserData } from 'services/actions/auth'
 import { useDispatch, useSelector } from 'react-redux'
+import { getStoreUserData } from 'services/selectors'
 
 export const ProtectedRouteElement = ({ element }) => {
   const dispatch = useDispatch()
   const [isUserLoaded, setUserLoaded] = useState(false)
-  const { email } = useSelector(store => store.userData)
+  const { email } = useSelector(getStoreUserData)
 
   useEffect(() => {
-    dispatch(getUserData())
+    !email && dispatch(getUserData())
     setUserLoaded(true)
-  }, [dispatch])
+  }, [dispatch, email])
 
   if (!isUserLoaded) {
     return null;

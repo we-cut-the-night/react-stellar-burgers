@@ -42,3 +42,11 @@
   text-decoration: none;
   color: #8585ad;
 }
+
+.logo {
+  transition: opacity .4s;
+}
+
+.logo:hover {
+  opacity: .6;
+}

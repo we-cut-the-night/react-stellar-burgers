@@ -15,10 +15,22 @@ export const ingridientTypes = [
   },
 ]
 
+export const urls = {
+  constructor: "/",
+  login: "/login",
+  register: "/register",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
+  profile: "/profile",
+  orders: "/profile/orders",
+  ordersId: "/profile/orders/:id",
+  ingredientsId: "/ingredients/:id",
+  notFound: "*",
+}
 // Иван Иванович
-// ivanthecreator@gamil.com
-// 4r3e2w1q
+// ivanthecreator@gmail.com
+// 1q2w3e4r
 
 // Петр Петрович
 // piterthecreator@gmail.com
-// 4r3e2w1q
+// 1q2w3e4r
