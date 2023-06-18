@@ -1,18 +1,35 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
 import styles from './reset-password.module.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserData, resetPasswordEnd } from 'services/actions/auth'
 
 function ResetPassword() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { email } = useSelector(store => store.userData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ password: '', code: '' })
 
   const handleFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     console.log(formValues)
+    const data = { password: formValues.password, token: formValues.code }
+
+    dispatch(resetPasswordEnd(data, () => navigate('/login')))
   };
 
-  useEffect(() => resetFormValues({ password: '', code: '' }), [resetFormValues])
+  useEffect(() => {
+    dispatch(getUserData())
+    resetFormValues({ password: '', code: '' })
+  }, [dispatch, resetFormValues])
+
+  if (email) {
+    return (
+      <Navigate to="/" replace />
+    )
+  }
 
   return (
     <section className={styles.root}>

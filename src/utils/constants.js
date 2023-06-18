@@ -14,3 +14,11 @@ export const ingridientTypes = [
     type: 'main',
   },
 ]
+
+// Иван Иванович
+// ivanthecreator@gamil.com
+// 4r3e2w1q
+
+// Петр Петрович
+// piterthecreator@gmail.com
+// 4r3e2w1q

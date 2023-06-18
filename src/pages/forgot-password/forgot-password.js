@@ -1,18 +1,33 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
 import styles from './forgot-password.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserData, resetPasswordStart } from 'services/actions/auth'
 
 function ForgotPassword() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { email } = useSelector(store => store.userData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ email: '' })
 
   const handleFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(formValues)
+    event.preventDefault()
+    const data = { email: formValues.email }
+    dispatch(resetPasswordStart(data, () => navigate('/reset-password')))
   };
 
-  useEffect(() => resetFormValues({ email: '' }), [resetFormValues])
+  useEffect(() => {
+    dispatch(getUserData())
+    resetFormValues({ email: '' })
+  }, [dispatch, resetFormValues])
+
+  if (email) {
+    return (
+      <Navigate to="/" replace />
+    )
+  }
 
   return (
     <section className={styles.root}>

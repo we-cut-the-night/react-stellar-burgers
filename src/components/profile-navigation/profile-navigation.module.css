@@ -1,0 +1,34 @@
+.root {
+  width: 320px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.navigationLinkWrapper {
+  display: flex;
+  height: 64px;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity .4s;
+}
+
+.navigationLinkWrapper:hover {
+  opacity: .8;
+}
+
+.navigationLink {
+  text-decoration: none;
+  color: #8585ad;
+}
+
+.navigationLinkActive {
+  color: #f2f2f3;
+}
+
+.navigationComments {
+  color: #8585ad;
+  opacity: .4;
+}

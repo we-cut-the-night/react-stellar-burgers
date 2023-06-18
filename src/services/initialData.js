@@ -20,3 +20,10 @@ export const initialOrder = {
   orderFail: false,
   isOpen: false
 }
+
+export const initialUserData = {
+  loggedIn: false,
+  email: '',
+  name: '',
+  resetPassword: false,
+}

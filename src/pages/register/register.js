@@ -1,18 +1,39 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
+import { createUser, getUserData } from 'services/actions/auth'
 import styles from './register.module.css'
+import { useDispatch, useSelector } from 'react-redux';
 
 function Register() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { email } = useSelector(store => store.userData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ name: "", email: '', password: '' })
 
   const handleFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(formValues)
+    event.preventDefault()
+
+    const userData = {
+      name: formValues.name,
+      email: formValues.email,
+      password: formValues.password
+    }
+
+    dispatch(createUser(userData, () => navigate('/')))
   };
 
-  useEffect(() => resetFormValues({ name: "", email: '', password: '' }), [resetFormValues])
+  useEffect(() => {
+    dispatch(getUserData())
+    resetFormValues({ name: "", email: '', password: '' })
+  }, [dispatch, resetFormValues])
+
+  if (email) {
+    return (
+      <Navigate to="/" replace />
+    )
+  }
 
   return (
     <section className={styles.root}>

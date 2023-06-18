@@ -34,9 +34,11 @@
 }
 
 .appheader__navLink__text {
+  text-decoration: none;
   color: #F2F2F3;
 }
 
 .appheader__navLink__text_inactive {
+  text-decoration: none;
   color: #8585ad;
 }
