@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux'
 import { ingredientPropType } from '../../../utils/types'
 import style from './ingridient-details.module.css'
+import { getIngredientDetails } from 'services/selectors'
 
 function IngridientDetails() {
-  const ingredientDetails = useSelector(store => store.ingredientDetails.ingredientDetails)
+  const { ingredientDetails } = useSelector(getIngredientDetails)
 
   const ingridientValue = [
     {

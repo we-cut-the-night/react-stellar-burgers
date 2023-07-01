@@ -7,11 +7,12 @@ import { ingridientTypes } from '../../utils/constants'
 import { ingredientPropType } from '../../utils/types'
 import { useSelector, useDispatch } from 'react-redux'
 import { SET_INGRIDIENT_TAB } from '../../services/actions'
+import { getBurrentIngredients } from 'services/selectors'
 
 function BurgerIngredients() {
   const dispatch = useDispatch()
-  const ingredientsAll = useSelector(store => store.burgerIngredients.ingredientsAll)
-  const { currentIngredientTab } = useSelector(store => store.burgerIngredients)
+  const { ingredientsAll } = useSelector(getBurrentIngredients)
+  const { currentIngredientTab } = useSelector(getBurrentIngredients)
   const ingridientList = useRef(null);
   const bun = useRef(null);
   const sauce = useRef(null);

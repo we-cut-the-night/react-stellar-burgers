@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux'
 import Accepted from '../../../images/accepted.png'
 import styles from './order-details.module.css'
+import { getOrder } from 'services/selectors'
 
 function OrderDetails() {
-  const order = useSelector(store => store.order.order)
+  const order = useSelector(getOrder)
 
   return (
     <div className={`${styles.orderDetails} pt-30 pb-30`}>
