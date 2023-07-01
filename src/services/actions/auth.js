@@ -8,10 +8,6 @@ import {
   RESET_PASSWORD_START,
   RESET_PASSWORD_END
 } from "./index"
-// postAuth(data, register||login||logout||token - ?)
-// postPassword(data, reset||null)
-// getUser()
-// patchUser(data)
 
 export const createUser = (data, navigate) => {
   return function (dispatch) {

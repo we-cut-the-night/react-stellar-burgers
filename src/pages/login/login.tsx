@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { FC, FormEvent, useEffect } from 'react'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
@@ -7,14 +7,15 @@ import { login } from 'services/actions/auth'
 import { urls } from 'utils/constants'
 import styles from './login.module.css'
 import { getStoreUserData } from 'services/selectors'
+import { TStoreDispatch } from 'utils/types'
 
-function Login() {
+const Login: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<TStoreDispatch>()
   const { email } = useSelector(getStoreUserData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ email: '', password: '' })
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault()
     const userData = {
       email: formValues.email,
@@ -39,7 +40,6 @@ function Login() {
       <div className={styles.content}>
         <h2 className={`${styles.header} text text_type_main-medium pb-6`}>Вход</h2>
         <form
-          type="submit"
           className={styles.form}
           onSubmit={handleFormSubmit}
           noValidate
@@ -60,8 +60,6 @@ function Login() {
               placeholder={'Пароль'}
               value={formValues.password}
               onChange={handleChange}
-              error={Boolean(errors.password)}
-              errorText={errors.password}
             />
           </div>
           <div className={styles.buttonSubmit}>

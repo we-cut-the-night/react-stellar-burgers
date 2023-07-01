@@ -1,4 +1,4 @@
-export const getCookies = (tokenName) => {
+export const getCookies = (tokenName: string) => {
   const cookieMatches = document.cookie.match(
     // eslint-disable-next-line no-useless-escape
     new RegExp('(?:^|; )' + tokenName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -6,7 +6,7 @@ export const getCookies = (tokenName) => {
   return cookieMatches ? decodeURIComponent(cookieMatches[1]) : undefined;
 }
 
-export const setCookies = (tokenName, tokenValue, props) => {
+export const setCookies = (tokenName: string, tokenValue: string | null, props: any) => {
   props = props || {}
   let expire = props.expires
 
@@ -20,7 +20,7 @@ export const setCookies = (tokenName, tokenValue, props) => {
     props.expires = expire.toUTCString()
   }
 
-  let cookie = tokenName + '=' + encodeURIComponent(tokenValue)
+  let cookie = tokenName + '=' + encodeURIComponent(tokenValue!)
 
   for (const prop in props) {
     cookie += '; ' + prop
@@ -33,4 +33,4 @@ export const setCookies = (tokenName, tokenValue, props) => {
   document.cookie = cookie
 }
 
-export const deleteCookies = (tokenName) => setCookies(tokenName, null, { expires: -1 })
+export const deleteCookies = (tokenName: string) => setCookies(tokenName, null, { expires: -1 })

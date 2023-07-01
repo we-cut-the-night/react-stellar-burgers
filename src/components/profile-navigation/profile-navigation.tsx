@@ -2,18 +2,20 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import styles from './profile-navigation.module.css'
 import { useDispatch } from 'react-redux'
 import { logout } from 'services/actions/auth'
+import { FC, MouseEvent } from 'react'
+import { TStoreDispatch } from 'utils/types'
 
-function ProfileNavigation() {
+const ProfileNavigation: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<TStoreDispatch>()
 
-  const handleLogOut = (event) => {
+  const handleLogOut = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     const data = { token: localStorage.getItem('refreshToken') }
     dispatch(logout(data, () => navigate('/login')))
   }
 
-  const getClassName = (isActive) => {
+  const getClassName = (isActive: boolean) => {
     const defaultName = `${styles.navigationLink} text text_type_main-medium`
     return !isActive ? defaultName : `${defaultName} ${styles.navigationLinkActive}`
   }

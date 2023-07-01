@@ -4,7 +4,7 @@ const headers = {
   'Content-Type': 'application/json',
 }
 
-const checkResponse = (res) => {
+const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json()
   }
@@ -23,7 +23,7 @@ export const getIngridientsData = () => {
   .then(checkResponse)
 }
 
-export const postOrder = (data) => {
+export const postOrder = (data: object) => {
   return fetch(`${BASE_URL}/orders`, {
     method: 'POST',
     headers: headers,
@@ -32,7 +32,7 @@ export const postOrder = (data) => {
     .then(checkResponse)
 }
 
-export const postAuth = (data, action) => {
+export const postAuth = (data: object, action: string) => {
   return fetch(`${BASE_URL}/auth/${action}`, {
     method: 'POST',
     headers: headers,
@@ -41,7 +41,7 @@ export const postAuth = (data, action) => {
   .then(checkResponse)
 }
 
-export const postPassword = (data, action) => {
+export const postPassword = (data: object, action: string) => {
   const endpoint = action ? `password-reset/${action}` : "password-reset"
   return fetch(`${BASE_URL}/${endpoint}`, {
     method: 'POST',
@@ -51,7 +51,7 @@ export const postPassword = (data, action) => {
   .then(checkResponse)
 }
 
-export const getUser = (token) => {
+export const getUser = (token: string) => {
   return fetch(`${BASE_URL}/auth/user`, {
     method: 'GET',
     headers: {
@@ -62,7 +62,7 @@ export const getUser = (token) => {
   .then(checkResponse)
 }
 
-export const patchUser = (data, token) => {
+export const patchUser = (data: object, token: string) => {
   return fetch(`${BASE_URL}/auth/user`, {
     method: 'PATCH',
     headers: {

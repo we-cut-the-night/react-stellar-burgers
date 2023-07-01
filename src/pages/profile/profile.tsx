@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, FC, FormEvent, FocusEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
@@ -6,9 +6,10 @@ import ProfileNavigation from 'components/profile-navigation/profile-navigation'
 import { updateUserData } from 'services/actions/auth'
 import styles from './profile.module.css'
 import { getStoreUserData } from 'services/selectors'
+import { TStoreDispatch } from 'utils/types'
 
-function Profile() {
-  const dispatch = useDispatch()
+const Profile: FC = () => {
+  const dispatch = useDispatch<TStoreDispatch>()
   const { loggedIn, name, email } = useSelector(getStoreUserData)
 
   const {
@@ -27,7 +28,7 @@ function Profile() {
     formValues.email !== email ||
     formValues.password !== ''
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault()
     let userData = {}
 
@@ -47,22 +48,24 @@ function Profile() {
 
   const handleCancel = () => resetFormValues({ name: name, email: email, password: '' })
 
-  const deactivateInput = (event) => {
-    event.currentTarget
+  const deactivateInput = (event?: FocusEvent) => {
+    const target = event?.currentTarget
       .closest('.input')
-      .querySelector('input')
-      .setAttribute('readonly', true);
+      ?.querySelector('input') as HTMLInputElement
+      target.setAttribute('readonly', 'true');
   }
 
-  const activateInput = (event) => {
-    const input = event.currentTarget.closest('.input').querySelector('input')
-    input.removeAttribute('readonly')
-    input.focus()
+  const activateInput = (event?: React.MouseEvent<HTMLDivElement>) => {
+    const target = event?.currentTarget
+    .closest('.input')
+    ?.querySelector('input') as HTMLDivElement
+    target.removeAttribute('readonly')
+    target.focus()
   }
 
   useEffect(() => {
     Array.from(document.querySelectorAll('input')).forEach(input =>
-      input.setAttribute('readonly', true)
+      input.setAttribute('readonly', 'true')
     );
   }, []);
 
@@ -79,7 +82,6 @@ function Profile() {
         <ProfileNavigation />
         <form
           className={`${styles.form} ml-15 mr-15`}
-          type="submit"
           noValidate
           onSubmit={handleFormSubmit}
         >

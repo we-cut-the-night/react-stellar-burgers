@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import { IStringValues } from 'utils/types';
 
-export const useForm = (valuesDefault) => {
+export const useForm = (valuesDefault: IStringValues) => {
   const [formValues, setFormValues] = useState(valuesDefault)
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<IStringValues>({})
   const [isValid, setIsValid] = useState(false)
 
-  const handleChange = (event) => {
-    const target = event.target
+  const handleChange = (event: ChangeEvent) => {
+    const target = event.target as HTMLInputElement
     setFormValues({ ...formValues, [target.name]: target.value })
     if (target.name === "password") {
       target.value.length < 6 && target.value.length > 0
@@ -15,7 +16,7 @@ export const useForm = (valuesDefault) => {
     }
   }
 
-  const resetFormValues = useCallback((values) => {
+  const resetFormValues = useCallback((values: IStringValues) => {
     setFormValues(values)
     setErrors({})
     setIsValid(false)

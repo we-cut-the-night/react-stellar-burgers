@@ -10,12 +10,14 @@ import App from './components/app/app'
 import './index.css'
 
 const composeEnhancers =
+  // @ts-ignore
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    // @ts-ignore
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose
 const enhancer = composeEnhancers(applyMiddleware(thunk))
-const store = legacy_createStore(rootReducer, enhancer)
-const root = ReactDOM.createRoot(document.querySelector('#root'))
+export const store = legacy_createStore(rootReducer, enhancer)
+const root = ReactDOM.createRoot(document.querySelector('#root')!)
 
 root.render(
   <BrowserRouter>
