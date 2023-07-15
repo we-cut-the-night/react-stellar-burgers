@@ -1,15 +1,16 @@
-import { useRef } from 'react'
+import { useRef, FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrop, useDrag } from 'react-dnd'
 import { UPDATE_INGREDIENTS, REMOVE_INGREDIENT } from '../../../services/actions'
 import styles from './constructor-item.module.css'
+import { IPropsConstructorItem, TStoreDispatch } from 'utils/types'
 
-function ConstructorItem({ index, data, order }) {
-  const ref = useRef(null)
-  const dispatch = useDispatch()
-  const middle = order.middle
-  const buns = [order.buns]
+const ConstructorItem: FC<IPropsConstructorItem> = ({ index, data, middle, buns }) => {
+  const ref = useRef<HTMLLIElement>(null)
+  const dispatch = useDispatch<TStoreDispatch>()
+  // const middle = order.middle
+  // const buns = [order.buns]
 
   function handleDeleteItem() {
     dispatch({
@@ -18,7 +19,7 @@ function ConstructorItem({ index, data, order }) {
     })
   }
 
-  const dragItem = (indexDrag, indexHover) => {
+  const dragItem = (indexDrag: number, indexHover: number) => {
     const dragItem = middle[indexDrag]
     const hoverItem = middle[indexHover]
 
@@ -41,7 +42,7 @@ function ConstructorItem({ index, data, order }) {
 
   const [, drop] = useDrop({
     accept: 'middle',
-    hover: (item, monitor) => {
+    hover: (item: {index: number}, monitor: any) => {
       const indexDrag = item.index;
       const indexHover = index;
 
@@ -60,12 +61,12 @@ function ConstructorItem({ index, data, order }) {
     }
   })
 
-  const sortItemsRef = drag(drop(ref))
+  drag(drop(ref))
 
   return (
     <li
       className={`${styles.burgerConstructor__item} ${isDrag && styles.burgerConstructor__itemIsDrag} mr-4 mb-4`}
-      ref={sortItemsRef}
+      ref={ref}
     >
       <div className='mr-2'>
         <DragIcon type='primary' />

@@ -7,11 +7,12 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { urls } from 'utils/constants'
 import styles from './app-header.module.css'
+import { FC } from 'react'
 
-function AppHeader() {
+const AppHeader: FC = () => {
   const location = useLocation()
 
-  const getClassName = (isActive) => {
+  const getClassName = (isActive: boolean) => {
     const additionalStyles = "text text_type_main-default ml-2"
     return !isActive
       ? `${styles.appheader__navLink__text_inactive} ${additionalStyles}`

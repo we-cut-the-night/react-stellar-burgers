@@ -1,14 +1,15 @@
 // import { useAuth } from '../services/auth';
 import { Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, FC } from 'react'
 import { getUserData } from 'services/actions/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoreUserData } from 'services/selectors'
+import { IPropsElement, TStoreDispatch } from 'utils/types'
 
-export const ProtectedRouteElement = ({ element }) => {
-  const dispatch = useDispatch()
+export const ProtectedRouteElement: FC<IPropsElement> = ({ element }) => {
+  const dispatch = useDispatch<TStoreDispatch>()
   const [isUserLoaded, setUserLoaded] = useState(false)
-  const { email } = useSelector(getStoreUserData)
+  const { email }: {email: string} = useSelector(getStoreUserData)
 
   useEffect(() => {
     !email && dispatch(getUserData())

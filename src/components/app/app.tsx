@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Modal from 'components/modal/modal'
@@ -18,9 +18,10 @@ import Constructor from 'pages/constructor/constructor'
 import { urls } from 'utils/constants'
 import { getIngredientDetailsIsOpen, getOrderIsOpen } from 'services/selectors'
 import { getUserData } from 'services/actions/auth'
+import { TStoreDispatch } from 'utils/types';
 
-function App() {
-  const dispatch = useDispatch()
+const App: FC = () => {
+  const dispatch = useDispatch<TStoreDispatch>()
   const location = useLocation()
   const navigate = useNavigate()
   const ingredientDetailsIsOpen = useSelector(getIngredientDetailsIsOpen)
@@ -55,8 +56,8 @@ function App() {
         <Route path={urls.register} element={<Register />} />
         <Route path={urls.forgotPassword} element={<ForgotPassword />} />
         <Route path={urls.resetPassword} element={<ResetPassword />} />
-        <Route path={urls.profile} exact element={<ProtectedRouteElement element={<Profile />} />} />
-        <Route path={urls.orders} exact element={<ProtectedRouteElement element={<h2>История заказов</h2>} />} />
+        <Route path={urls.profile} element={<ProtectedRouteElement element={<Profile />} />} />
+        <Route path={urls.orders} element={<ProtectedRouteElement element={<h2>История заказов</h2>} />} />
         <Route path={urls.ordersId} element={<ProtectedRouteElement element={<h2>Детали заказа</h2>} />} />
         <Route path={urls.ingredientsId} element={<IngredientDetails />} />
         <Route path={urls.notFound} element={<h2>Страница не найдена</h2>} />
