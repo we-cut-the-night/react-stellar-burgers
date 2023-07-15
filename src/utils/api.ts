@@ -8,7 +8,6 @@ const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json()
   }
-  // return Promise.reject(res);
   return res.json()
     .then((data) => {
       throw new Error(data.message)

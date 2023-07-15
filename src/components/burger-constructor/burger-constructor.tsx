@@ -15,21 +15,21 @@ import { useNavigate } from "react-router-dom";
 import { urls } from "../../utils/constants";
 import { getBurgerConstructor, getStoreUserData } from "services/selectors";
 import {
-  IIngredientData,
+  AppDispatch,
   IIngredientDataWithTimeId,
-  TStoreDispatch,
 } from "utils/types";
+import { IStoreBurgerConstructor } from "services/reducers/types";
 
 const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch<TStoreDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { constructor }: { constructor: IIngredientDataWithTimeId[] } =
+  const { constructor }: IStoreBurgerConstructor =
     useSelector(getBurgerConstructor);
   const { loggedIn } = useSelector(getStoreUserData);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const handleDrop = (item: IIngredientData) => {
+  const handleDrop = (item: IIngredientDataWithTimeId) => {
     dispatch({
       type: ADD_INGREDIENT,
       item: item,
@@ -38,7 +38,7 @@ const BurgerConstructor: FC = () => {
 
   const handleOrderClick = () => {
     if (loggedIn) {
-      const ingredients = constructor.map((item: IIngredientData) => item._id);
+      const ingredients = constructor.map(item => item._id);
       dispatch(handleOrder({ ingredients }));
     } else {
       navigate(urls.login);
@@ -55,16 +55,16 @@ const BurgerConstructor: FC = () => {
     },
   });
 
-  const buns: IIngredientDataWithTimeId[] = constructor.filter(
+  const buns = constructor.filter(
     (item) => item.type === ingridientTypes[0].type
   );
-  const middle: IIngredientDataWithTimeId[] | [] = constructor.filter(
+  const middle = constructor.filter(
     (item) => item.type !== ingridientTypes[0].type
   );
 
   useEffect(() => {
     const priceMiddle: number = middle.reduce(
-      (sum: number, item: IIngredientDataWithTimeId) =>
+      (sum: number, item) =>
         (sum = sum + item.price),
       0
     );

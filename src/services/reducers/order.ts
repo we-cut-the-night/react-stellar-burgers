@@ -2,8 +2,9 @@ import { initialOrder } from '../initialData'
 import {
   ORDER_CLOSE, ORDER_FAIL, ORDER_SUCCESS, ORDER_REQUEST
 } from '../actions'
+import { TApplicationActions } from 'services/actions/types';
 
-export const makeOrder = (state = initialOrder, action) => {
+export const makeOrder = (state = initialOrder, action: TApplicationActions) => {
   switch (action.type) {
     case ORDER_REQUEST: {
       return {
@@ -29,7 +30,7 @@ export const makeOrder = (state = initialOrder, action) => {
     }
     case ORDER_CLOSE: {
       return {
-        order: {},
+        order: initialOrder.order,
         orderRequest: false,
         orderFail: false,
         isOpen: false

@@ -4,10 +4,10 @@ import { useEffect, useState, FC } from 'react'
 import { getUserData } from 'services/actions/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoreUserData } from 'services/selectors'
-import { IPropsElement, TStoreDispatch } from 'utils/types'
+import { AppDispatch, IPropsElement } from 'utils/types'
 
 export const ProtectedRouteElement: FC<IPropsElement> = ({ element }) => {
-  const dispatch = useDispatch<TStoreDispatch>()
+  const dispatch = useDispatch<AppDispatch>()
   const [isUserLoaded, setUserLoaded] = useState(false)
   const { email }: {email: string} = useSelector(getStoreUserData)
 

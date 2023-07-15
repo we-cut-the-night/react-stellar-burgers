@@ -6,8 +6,9 @@ import {
   RESET_PASSWORD_START,
   RESET_PASSWORD_END
 } from '../actions'
+import { TApplicationActions } from 'services/actions/types';
 
-export const setUserData = (state = initialUserData, action) => {
+export const setUserData = (state = initialUserData, action: TApplicationActions) => {
   switch (action.type) {
     case LOGIN: {
       return {

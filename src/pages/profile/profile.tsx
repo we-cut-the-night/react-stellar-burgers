@@ -6,10 +6,10 @@ import ProfileNavigation from 'components/profile-navigation/profile-navigation'
 import { updateUserData } from 'services/actions/auth'
 import styles from './profile.module.css'
 import { getStoreUserData } from 'services/selectors'
-import { TStoreDispatch } from 'utils/types'
+import { AppDispatch } from 'utils/types'
 
 const Profile: FC = () => {
-  const dispatch = useDispatch<TStoreDispatch>()
+  const dispatch = useDispatch<AppDispatch>()
   const { loggedIn, name, email } = useSelector(getStoreUserData)
 
   const {

@@ -3,15 +3,16 @@ import styles from './profile-navigation.module.css'
 import { useDispatch } from 'react-redux'
 import { logout } from 'services/actions/auth'
 import { FC, MouseEvent } from 'react'
-import { TStoreDispatch } from 'utils/types'
+import { AppDispatch } from 'utils/types'
 
 const ProfileNavigation: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch<TStoreDispatch>()
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleLogOut = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
-    const data = { token: localStorage.getItem('refreshToken') }
+    const token = localStorage.getItem('refreshToken')
+    const data = { token: token ? token : '' }
     dispatch(logout(data, () => navigate('/login')))
   }
 

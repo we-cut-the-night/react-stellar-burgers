@@ -5,8 +5,9 @@ import {
   INGREDIENTS_ALL_FAIL,
   SET_INGRIDIENT_TAB,
 } from '../actions/index'
+import { TApplicationActions } from 'services/actions/types';
 
-export const getIngredientsAll = (state = initialBurgerIngredients, action) => {
+export const getIngredientsAll = (state = initialBurgerIngredients, action: TApplicationActions) => {
   switch (action.type) {
     case INGREDIENTS_ALL_REQUEST: {
       return {

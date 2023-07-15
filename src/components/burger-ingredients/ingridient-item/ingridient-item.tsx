@@ -41,7 +41,6 @@ const IngredientItem: FC<{ item: IIngredientData }> = ({ item }) => {
       to={{ pathname: `/ingredients/${id}` }}
       state={{ background: location }}
       className={style.link}
-      // ref={dragRef}
     >
       <li
         ref={dragRef}

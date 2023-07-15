@@ -9,8 +9,6 @@ import { IPropsConstructorItem, TStoreDispatch } from 'utils/types'
 const ConstructorItem: FC<IPropsConstructorItem> = ({ index, data, middle, buns }) => {
   const ref = useRef<HTMLLIElement>(null)
   const dispatch = useDispatch<TStoreDispatch>()
-  // const middle = order.middle
-  // const buns = [order.buns]
 
   function handleDeleteItem() {
     dispatch({

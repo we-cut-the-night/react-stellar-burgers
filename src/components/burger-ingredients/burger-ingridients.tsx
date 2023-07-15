@@ -57,7 +57,7 @@ const BurgerIngredients: FC = () => {
       );
       const minDelta = Math.min(bunDelta, sauceDelta, mainDelta);
 
-      let tab = null;
+      let tab = '';
       if (minDelta === bunDelta) {
         tab = ingridientTypes[0].type;
       } else if (minDelta === sauceDelta) {

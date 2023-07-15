@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { urls } from 'utils/constants'
 import styles from './register.module.css'
 import { getStoreUserData } from 'services/selectors';
-import { TStoreDispatch } from 'utils/types';
+import { AppDispatch } from 'utils/types';
 
 const Register: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch<TStoreDispatch>()
+  const dispatch = useDispatch<AppDispatch>()
   const { email } = useSelector(getStoreUserData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ name: "", email: '', password: '' })
 

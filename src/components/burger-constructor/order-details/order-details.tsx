@@ -5,7 +5,7 @@ import { getOrder } from "services/selectors";
 import { FC } from "react";
 
 const OrderDetails: FC = () => {
-  const order = useSelector(getOrder);
+  const { order } = useSelector(getOrder);
 
   return (
     <div className={`${styles.orderDetails} pt-30 pb-30`}>

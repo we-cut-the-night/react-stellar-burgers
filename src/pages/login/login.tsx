@@ -7,11 +7,11 @@ import { login } from 'services/actions/auth'
 import { urls } from 'utils/constants'
 import styles from './login.module.css'
 import { getStoreUserData } from 'services/selectors'
-import { TStoreDispatch } from 'utils/types'
+import { AppDispatch } from 'utils/types'
 
 const Login: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch<TStoreDispatch>()
+  const dispatch = useDispatch<AppDispatch>()
   const { email } = useSelector(getStoreUserData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ email: '', password: '' })
 
