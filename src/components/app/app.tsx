@@ -19,6 +19,7 @@ import { urls } from "utils/constants";
 import { getIngredientDetailsIsOpen, getOrder } from "services/selectors";
 import { getUserData } from "services/actions/auth";
 import { AppDispatch } from "utils/types";
+import Feed from "pages/feed/feed";
 
 const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -62,6 +63,7 @@ const App: FC = () => {
         <Route path={urls.register} element={<Register />} />
         <Route path={urls.forgotPassword} element={<ForgotPassword />} />
         <Route path={urls.resetPassword} element={<ResetPassword />} />
+        <Route path={urls.feed} element={<Feed />} />
         <Route
           path={urls.profile}
           element={<ProtectedRouteElement element={<Profile />} />}

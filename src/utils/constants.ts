@@ -25,6 +25,8 @@ export const urls = {
   orders: "/profile/orders",
   ordersId: "/profile/orders/:id",
   ingredientsId: "/ingredients/:id",
+  feed: "/feed",
+  feedId: "/feed/:id",
   notFound: "*",
 }
 // Иван Иванович
