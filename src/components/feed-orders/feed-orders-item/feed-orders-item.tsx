@@ -1,10 +1,11 @@
 import { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredientData, IIngredientDataWithTimeId } from "utils/types";
+import { IIngredientData } from "utils/types";
 import { useSelector } from "react-redux";
 import { getBurrentIngredients } from "services/selectors";
 import styles from "./feed-orders-item.module.css";
+import { getOrderPrice } from "utils/functions";
 
 interface IFeedOrderItemProps {
   data: {
@@ -19,23 +20,9 @@ interface IFeedOrderItemProps {
   type: string;
 }
 
-const getOrderPrice = (
-  data: IIngredientData[] | IIngredientDataWithTimeId[]
-): number => {
-  const buns = data?.filter((item) => (item.type === "bun" ? item : null))
-  const middle = data?.filter((item) => (item.type !== "bun" ? item : null))
-  const bunPrice = buns && buns?.length > 0 ? buns[0].price : 0
-  const middlePrice: number = middle?.reduce(
-    (sum, item) => (sum = sum + item.price),
-    0
-  );
-
-  return bunPrice * 2 + (middlePrice ? middlePrice : 0)
-};
-
 const FeedOrdersItem: FC<IFeedOrderItemProps> = ({ data, type }) => {
   const location = useLocation();
-  const { ingredientsAll } = useSelector(getBurrentIngredients); // todo: useAppSelector
+  const { ingredientsAll } = useSelector(getBurrentIngredients);
   const ingredientList = ingredientsAll?.filter((item) =>
     data?.ingredients.includes(item._id)
   );

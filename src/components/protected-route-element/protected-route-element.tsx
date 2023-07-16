@@ -1,4 +1,3 @@
-// import { useAuth } from '../services/auth';
 import { Navigate } from 'react-router-dom'
 import { useEffect, useState, FC } from 'react'
 import { getUserData } from 'services/actions/auth'
