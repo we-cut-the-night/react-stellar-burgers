@@ -1,11 +1,12 @@
 import { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredientData } from "utils/types";
-import { useSelector } from "react-redux";
+import { IIngredientData, TStoreDispatch } from "utils/types";
+import { useDispatch, useSelector } from "react-redux";
 import { getBurrentIngredients } from "services/selectors";
 import styles from "./feed-orders-item.module.css";
 import { getOrderPrice } from "utils/functions";
+import { OPEN_ORDER_DETAILS } from "services/actions";
 
 interface IFeedOrderItemProps {
   data: {
@@ -21,6 +22,7 @@ interface IFeedOrderItemProps {
 }
 
 const FeedOrdersItem: FC<IFeedOrderItemProps> = ({ data, type }) => {
+  const dispatch = useDispatch<TStoreDispatch>();
   const location = useLocation();
   const { ingredientsAll } = useSelector(getBurrentIngredients);
   const ingredientList = ingredientsAll?.filter((item) =>
@@ -32,16 +34,22 @@ const FeedOrdersItem: FC<IFeedOrderItemProps> = ({ data, type }) => {
     []
   );
 
-  const path =
-    type === "feed" ? `/feed/${data._id}` : `/profile/orders/${data._id}`;
+  const handleClickItem = () => {
+    dispatch({
+      type: OPEN_ORDER_DETAILS,
+    });
+  }
 
   return (
     <Link
-      to={{ pathname: path }}
+      to={{ pathname: type === "feed" ? `/feed/${data._id}` : `/profile/orders/${data._id}` }}
       state={{ background: location }}
       className={styles.root}
     >
-      <li className={`${styles.item}`}>
+      <li
+      className={`${styles.item}`}
+      onClick={handleClickItem}
+      >
         <div className={`${styles.itemNumber}`}>
           <p className={`text text_type_digits-default`}>#{data?.number}</p>
           <p className={`${styles.itemCreated} text text_type_main-default`}>

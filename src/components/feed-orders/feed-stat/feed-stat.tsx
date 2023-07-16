@@ -1,60 +1,16 @@
 import { FC } from "react";
 import styles from "./feed-stat.module.css";
+import { getWSOrders } from "services/selectors";
+import { useSelector } from "react-redux";
+import { IWSOrder } from "utils/types";
 
 const FeedStat: FC = () => {
-  const ordersData = {
-    total: 100,
-    totalToday: 100,
-    orders: [
-      {
-        _id: "034535",
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0948",
-        ],
-        status: "done",
-        name: "Death Star Starship Main бургер",
-        createdAt: "Сегодня, 16:20",
-        updatedAt: "Сегодня, 16:20",
-        number: 34535,
-      },
-      {
-        _id: "034534",
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0948",
-          "643d69a5c3f7b9001cfa0949",
-          "643d69a5c3f7b9001cfa0947",
-          "643d69a5c3f7b9001cfa0946",
-          "643d69a5c3f7b9001cfa0944",
-        ],
-        status: "created",
-        name: "Interstellar бургер",
-        createdAt: "Сегодня, 16:20",
-        updatedAt: "Сегодня, 16:20",
-        number: 34534,
-      },
-      {
-        _id: "034533",
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0948",
-        ],
-        status: "pending1",
-        name: "Black Hole Singularity острый бургер",
-        createdAt: "Сегодня, 16:20",
-        updatedAt: "Сегодня, 16:20",
-        number: 34533,
-      },
-    ],
-  };
+  const { data } = useSelector(getWSOrders)
+  const ordersData = data && JSON.parse(data)
   const ordersDone = ordersData?.orders?.filter(
-    (item) => item.status === "done"
-  );
-  const ordersProcessing = ordersData?.orders?.filter((item) => item.status !== "done");
+    (item: IWSOrder) => item.status === "done"
+  )
+  const ordersProcessing = ordersData?.orders?.filter((item: IWSOrder) => item.status !== "done")
 
   return (
     <section
@@ -66,7 +22,7 @@ const FeedStat: FC = () => {
           <div>
             <p className={`text text_type_main-medium pb-6`}>Готовы:</p>
             <ul className={`${styles.statOrders}`}>
-              {ordersDone?.map((item) => (
+              {ordersDone?.map((item: IWSOrder) => (
                 <li
                   className={`${styles.statistics__order} ${styles.statOrder_status_completed} text text_type_digits-default`}
                   key={item._id}
@@ -79,7 +35,7 @@ const FeedStat: FC = () => {
           <div>
             <p className={`text text_type_main-medium pb-6`}>В работе:</p>
             <ul className={`${styles.statOrders}`}>
-              {ordersProcessing?.map((item) => (
+              {ordersProcessing?.map((item: IWSOrder) => (
                 <li
                   className={`${styles.statistics__order} text text_type_digits-default`}
                   key={item._id}

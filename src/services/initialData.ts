@@ -1,4 +1,5 @@
 import {
+  IStateWSOrders,
   IStoreBurgerConstructor,
   IStoreBurgerIngredients,
   IStoreIngredientDetails,
@@ -47,3 +48,8 @@ export const initialUserData: IStoreUserData = {
   name: "",
   resetPassword: false,
 };
+
+export const initialWSOrders: IStateWSOrders = {
+  connected: false,
+  data: ''
+}

@@ -9,9 +9,11 @@
   left: 0;
   background: none;
   transition: visibility 0.2s, opacity 0.2s;
+  z-index: 7;
 }
 
 .modalContent {
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,4 +29,5 @@
   position: absolute;
   top: 40px;
   right: 40px;
+  cursor: pointer;
 }

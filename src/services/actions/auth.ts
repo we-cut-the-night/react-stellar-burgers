@@ -177,7 +177,7 @@ export const updateUserData = (data: IStringValues): AppThunkAction => {
   }
 }
 
-const refreshTokenAndGetUser = async (): Promise<any> => {
+export const refreshTokenAndGetUser = async (): Promise<any> => {
   const data = { token: localStorage.getItem('refreshToken') }
 
   if (data.token) {

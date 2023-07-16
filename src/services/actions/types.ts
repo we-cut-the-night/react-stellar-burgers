@@ -12,6 +12,7 @@ import {
   LOGIN,
   LOGOUT,
   OPEN_INGREDIENT_DETAILS,
+  OPEN_ORDER_DETAILS,
   ORDER_CLOSE,
   ORDER_FAIL,
   ORDER_REQUEST,
@@ -24,6 +25,7 @@ import {
   SET_USER_DATA,
   UPDATE_INGREDIENTS,
 } from ".";
+import { TWSActions } from "./types-ws";
 
 export interface IIngredientsAllRequestAction {
   readonly type: typeof INGREDIENTS_ALL_REQUEST;
@@ -88,6 +90,10 @@ export interface ICloseIngredientDetailsAction {
   readonly type: typeof CLOSE_INGREDIENT_DETAILS;
 }
 
+export interface IOpenOrderDetailsAction {
+  readonly type: typeof OPEN_ORDER_DETAILS;
+}
+
 export interface ISetUserDataAction {
   readonly type: typeof SET_USER_DATA;
   data: {
@@ -131,4 +137,6 @@ export type TApplicationActions =
   | ILoginAction
   | ILogoutAction
   | IRestoreStartedAction
-  | IRestoreFinishedAction;
+  | IRestoreFinishedAction
+  | IOpenOrderDetailsAction
+  | TWSActions;

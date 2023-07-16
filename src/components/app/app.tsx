@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Modal from "components/modal/modal";
@@ -22,13 +22,24 @@ import { AppDispatch } from "utils/types";
 import Feed from "pages/feed/feed";
 import OrdersId from "pages/ordersId/orders-id";
 import OrdersHistory from "pages/orders-history/orders-history";
+import OrderDetail from "components/order-detail/order-detail";
+
+const getModalContentType = (path: string) => {
+  if (path === "/") return "newOrder";
+  else if (path.startsWith("/ingredients")) return "ingredientDetails";
+  else if (path.startsWith("/feed")) return "orderDetailsFeed";
+  else if (path.startsWith("/profile")) return "orderDetailsProfile";
+  else return "";
+};
 
 const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
+  const background = location?.state?.background;
   const navigate = useNavigate();
   const ingredientDetailsIsOpen = useSelector(getIngredientDetailsIsOpen);
   const { isOpen } = useSelector(getOrder);
+  const [modalContent, setModalContent] = useState("");
 
   const closeModal = () => {
     if (isOpen) {
@@ -43,6 +54,11 @@ const App: FC = () => {
     location.pathname !== urls.constructor && navigate(-1);
   };
 
+  useEffect(
+    () => setModalContent(getModalContentType(location.pathname)),
+    [location.pathname]
+  );
+
   useEffect(() => {
     const token = localStorage.getItem("refreshToken");
     token && dispatch({ type: LOGIN });
@@ -53,22 +69,22 @@ const App: FC = () => {
   return (
     <>
       <AppHeader />
-      <Routes
-        location={
-          ingredientDetailsIsOpen
-            ? { ...location, pathname: urls.constructor }
-            : location
-        }
-      >
+      <Routes location={(ingredientDetailsIsOpen || isOpen) ? (background || location) : location}>
         <Route path={urls.constructor} element={<Constructor />} />
         <Route path={urls.login} element={<Login />} />
         <Route path={urls.register} element={<Register />} />
         <Route path={urls.forgotPassword} element={<ForgotPassword />} />
         <Route path={urls.resetPassword} element={<ResetPassword />} />
         <Route path={urls.feed} element={<Feed />} />
-        <Route path={urls.feedId} element={<OrdersId/>} />
-        <Route path={urls.orders} element={<OrdersHistory />} />
-        <Route path={urls.ordersId} element={<OrdersId/>} />
+        <Route path={urls.feedId} element={<OrdersId />} />
+        <Route
+          path={urls.orders}
+          element={<ProtectedRouteElement element={<OrdersHistory />} />}
+        />
+        <Route
+          path={urls.ordersId}
+          element={<ProtectedRouteElement element={<OrdersId />} />}
+        />
         <Route
           path={urls.profile}
           element={<ProtectedRouteElement element={<Profile />} />}
@@ -86,11 +102,13 @@ const App: FC = () => {
       </Routes>
       {(isOpen || ingredientDetailsIsOpen) && (
         <Modal onClose={closeModal}>
-          {isOpen ? (
-            <OrderDetails />
-          ) : (
-            ingredientDetailsIsOpen && <IngridientDetails />
-          )}
+          {isOpen && modalContent === "newOrder" && <OrderDetails />}
+          {isOpen &&
+            (modalContent === "orderDetailsFeed" ||
+              modalContent === "orderDetailsProfile") && (
+              <OrderDetail type="modal" />
+            )}
+          {!isOpen && ingredientDetailsIsOpen && <IngridientDetails />}
         </Modal>
       )}
     </>

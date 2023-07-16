@@ -1,65 +1,50 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styles from "./orders-history.module.css";
 import ProfileNavigation from "components/profile-navigation/profile-navigation";
 import FeedOrdersItem from "components/feed-orders/feed-orders-item/feed-orders-item";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { getWSUserOrders } from "services/selectors";
+import { refreshTokenAndGetUser } from "services/actions/auth";
+import {
+  WS_AUTH_CONNECTION_START,
+  WS_AUTH_CONNECTION_STOP,
+} from "services/actions/ws-actions";
+import { IWSOrder } from "utils/types";
+import { getCookies } from "utils/cookies";
 
 const OrdersHistory: FC = () => {
-  const ordersInfo = {
-    orders: [
-      {
-        _id: "034535",
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0948",
-        ],
-        status: "done",
-        name: "Death Star Starship Main бургер",
-        createdAt: "Сегодня, 16:20",
-        updatedAt: "Сегодня, 16:20",
-        number: 34535,
-      },
-      {
-        _id: "034534",
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0948",
-          "643d69a5c3f7b9001cfa0949",
-          "643d69a5c3f7b9001cfa0947",
-          "643d69a5c3f7b9001cfa0946",
-          "643d69a5c3f7b9001cfa0944",
-        ],
-        status: "created",
-        name: "Interstellar бургер",
-        createdAt: "Сегодня, 16:20",
-        updatedAt: "Сегодня, 16:20",
-        number: 34534,
-      },
-      {
-        _id: "034533",
-        ingredients: [
-          "643d69a5c3f7b9001cfa093c",
-          "643d69a5c3f7b9001cfa0945",
-          "643d69a5c3f7b9001cfa0948",
-        ],
-        status: "pending1",
-        name: "Black Hole Singularity острый бургер",
-        createdAt: "Сегодня, 16:20",
-        updatedAt: "Сегодня, 16:20",
-        number: 34533,
-      },
-    ],
-  };
-  const orders = ordersInfo.orders;
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector(getWSUserOrders);
+  const ordersData = data && JSON.parse(data);
+  const orders = ordersData.orders;
+
+  useEffect(() => {
+    const accessToken = getCookies("accessToken");
+
+    if (!accessToken || data.includes("Invalid or missing token")) {
+      refreshTokenAndGetUser()
+        .then(() => {
+          dispatch({ type: WS_AUTH_CONNECTION_START });
+        })
+        .catch((err) => console.log(`Ошибка: ${err}`));
+    } else {
+      dispatch({ type: WS_AUTH_CONNECTION_START });
+    }
+
+    return () => {
+      dispatch({ type: WS_AUTH_CONNECTION_STOP });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className={`${styles.root}`}>
       <ProfileNavigation />
       <ul className={`${styles.ordersHistoryItems}`}>
-        {orders.map((item) => (
-          <FeedOrdersItem key={item._id} data={item} type="profile" />
-        ))}
+        {typeof orders !== "undefined" &&
+          orders.map((item: IWSOrder) => (
+            <FeedOrdersItem key={item._id} data={item} type="profile" />
+          ))}
       </ul>
     </main>
   );
