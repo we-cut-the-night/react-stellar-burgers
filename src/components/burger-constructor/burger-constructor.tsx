@@ -1,31 +1,30 @@
-import { useState, useEffect, FC } from "react";
-import { ingridientTypes } from "../../utils/constants";
+import { useState, useEffect, FC } from "react"
+import { ingridientTypes } from "../../utils/constants"
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+} from "@ya.praktikum/react-developer-burger-ui-components"
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT } from "../../services/actions";
-import { handleOrder } from "../../services/api";
-import ConstructorItem from "./constructor-item/constructor-item";
-import styles from "./burger-constructor.module.css";
-import { useNavigate } from "react-router-dom";
-import { urls } from "../../utils/constants";
-import { getBurgerConstructor, getStoreUserData } from "services/selectors";
+import { ADD_INGREDIENT } from "../../services/actions"
+import { handleOrder } from "../../services/api"
+import ConstructorItem from "./constructor-item/constructor-item"
+import styles from "./burger-constructor.module.css"
+import { useNavigate } from "react-router-dom"
+import { urls } from "../../utils/constants"
+import { getBurgerConstructor, getStoreUserData } from "services/selectors"
 import {
-  AppDispatch,
   IIngredientDataWithTimeId,
 } from "utils/types";
-import { IStoreBurgerConstructor } from "services/reducers/types";
+import { IStoreBurgerConstructor } from "services/reducers/types"
+import { useAppDispatch, useAppSelector } from "hooks"
 
 const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { constructor }: IStoreBurgerConstructor =
-    useSelector(getBurgerConstructor);
-  const { loggedIn } = useSelector(getStoreUserData);
+    useAppSelector(getBurgerConstructor);
+  const { loggedIn } = useAppSelector(getStoreUserData);
 
   const [totalPrice, setTotalPrice] = useState(0);
 

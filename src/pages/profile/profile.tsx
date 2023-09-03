@@ -1,16 +1,15 @@
 import { useEffect, FC, FormEvent, FocusEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
 import ProfileNavigation from 'components/profile-navigation/profile-navigation'
 import { updateUserData } from 'services/actions/auth'
 import styles from './profile.module.css'
 import { getStoreUserData } from 'services/selectors'
-import { AppDispatch } from 'utils/types'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const Profile: FC = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { loggedIn, name, email } = useSelector(getStoreUserData)
+  const dispatch = useAppDispatch()
+  const { loggedIn, name, email } = useAppSelector(getStoreUserData)
 
   const {
     formValues,

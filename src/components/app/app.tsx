@@ -1,5 +1,4 @@
-import { FC, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect, useState } from "react"
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Modal from "components/modal/modal";
 import AppHeader from "components/app-header/app-header";
@@ -18,11 +17,11 @@ import Constructor from "pages/constructor/constructor";
 import { urls } from "utils/constants";
 import { getIngredientDetailsIsOpen, getOrder } from "services/selectors";
 import { getUserData } from "services/actions/auth";
-import { AppDispatch } from "utils/types";
 import Feed from "pages/feed/feed";
 import OrdersId from "pages/ordersId/orders-id";
 import OrdersHistory from "pages/orders-history/orders-history";
 import OrderDetail from "components/order-detail/order-detail";
+import { useAppDispatch, useAppSelector } from "hooks";
 
 const getModalContentType = (path: string) => {
   if (path === "/") return "newOrder";
@@ -33,16 +32,16 @@ const getModalContentType = (path: string) => {
 };
 
 const App: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const background = location?.state?.background;
   const navigate = useNavigate();
-  const ingredientDetailsIsOpen = useSelector(getIngredientDetailsIsOpen);
-  const { isOpen } = useSelector(getOrder);
+  const ingredientDetailsIsOpen = useAppSelector(getIngredientDetailsIsOpen);
+  const { isOpen: orderIsOpen } = useAppSelector(getOrder);
   const [modalContent, setModalContent] = useState("");
 
   const closeModal = () => {
-    if (isOpen) {
+    if (orderIsOpen) {
       dispatch({
         type: ORDER_CLOSE,
       });
@@ -51,7 +50,13 @@ const App: FC = () => {
         type: CLOSE_INGREDIENT_DETAILS,
       });
     }
-    location.pathname !== urls.constructor && navigate(-1);
+    if(location.pathname.includes('/profile/orders')) {
+      navigate('/profile/orders')
+    } else if(location.pathname.includes('/feed')) {
+      navigate('/feed')
+    } else {
+      navigate('/')
+    }
   };
 
   useEffect(
@@ -69,46 +74,58 @@ const App: FC = () => {
   return (
     <>
       <AppHeader />
-      <Routes location={(ingredientDetailsIsOpen || isOpen) ? (background || location) : location}>
+      <Routes location={(ingredientDetailsIsOpen || orderIsOpen) ? (background || location) : location}>
+        <Route
+          path={urls.login}
+          element={<ProtectedRouteElement isNotAuth={true} element={<Login />} />}
+        />
+        <Route
+          path={urls.register}
+          element={<ProtectedRouteElement isNotAuth={true} element={<Register />} />}
+        />
+        <Route
+          path={urls.forgotPassword}
+          element={<ProtectedRouteElement isNotAuth={true} element={<ForgotPassword />} />}
+        />
+        <Route
+          path={urls.resetPassword}
+          element={<ProtectedRouteElement isNotAuth={true} element={<ResetPassword />} />}
+        />
         <Route path={urls.constructor} element={<Constructor />} />
-        <Route path={urls.login} element={<Login />} />
-        <Route path={urls.register} element={<Register />} />
-        <Route path={urls.forgotPassword} element={<ForgotPassword />} />
-        <Route path={urls.resetPassword} element={<ResetPassword />} />
         <Route path={urls.feed} element={<Feed />} />
         <Route path={urls.feedId} element={<OrdersId />} />
+        <Route path={urls.ingredientsId} element={<IngredientDetails />} />
+        <Route path={urls.notFound} element={<h2>Страница не найдена</h2>} />
         <Route
           path={urls.orders}
-          element={<ProtectedRouteElement element={<OrdersHistory />} />}
+          element={<ProtectedRouteElement isNotAuth={false} element={<OrdersHistory />} />}
         />
         <Route
           path={urls.ordersId}
-          element={<ProtectedRouteElement element={<OrdersId />} />}
+          element={<ProtectedRouteElement isNotAuth={false} element={<OrdersId />} />}
         />
         <Route
           path={urls.profile}
-          element={<ProtectedRouteElement element={<Profile />} />}
+          element={<ProtectedRouteElement isNotAuth={false} element={<Profile />} />}
         />
         <Route
           path={urls.orders}
-          element={<ProtectedRouteElement element={<h2>История заказов</h2>} />}
+          element={<ProtectedRouteElement isNotAuth={false} element={<h2>История заказов</h2>} />}
         />
         <Route
           path={urls.ordersId}
-          element={<ProtectedRouteElement element={<h2>Детали заказа</h2>} />}
+          element={<ProtectedRouteElement isNotAuth={false} element={<h2>Детали заказа</h2>} />}
         />
-        <Route path={urls.ingredientsId} element={<IngredientDetails />} />
-        <Route path={urls.notFound} element={<h2>Страница не найдена</h2>} />
       </Routes>
-      {(isOpen || ingredientDetailsIsOpen) && (
+      {(orderIsOpen || ingredientDetailsIsOpen) && (
         <Modal onClose={closeModal}>
-          {isOpen && modalContent === "newOrder" && <OrderDetails />}
-          {isOpen &&
+          {orderIsOpen && modalContent === "newOrder" && <OrderDetails />}
+          {orderIsOpen &&
             (modalContent === "orderDetailsFeed" ||
               modalContent === "orderDetailsProfile") && (
               <OrderDetail type="modal" />
             )}
-          {!isOpen && ingredientDetailsIsOpen && <IngridientDetails />}
+          {!orderIsOpen && ingredientDetailsIsOpen && <IngridientDetails />}
         </Modal>
       )}
     </>

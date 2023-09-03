@@ -1,26 +1,25 @@
 import {
   IIngredientData,
   IIngredientDataWithTimeId,
-  TStoreDispatch,
 } from "../../../utils/types";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
-import { useSelector, useDispatch } from "react-redux";
 import { OPEN_INGREDIENT_DETAILS } from "../../../services/actions";
 import style from "./ingridient-item.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { getBurgerConstructor } from "services/selectors";
 import { FC } from "react";
+import { useAppDispatch, useAppSelector } from "hooks";
 
 const IngredientItem: FC<{ item: IIngredientData }> = ({ item }) => {
-  const dispatch = useDispatch<TStoreDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const id = item._id;
   const { constructor }: { constructor: IIngredientDataWithTimeId[] } =
-    useSelector(getBurgerConstructor);
+    useAppSelector(getBurgerConstructor);
   const amount = constructor?.filter((i) => i._id === item._id).length;
 
   const handleClickItem = () => {

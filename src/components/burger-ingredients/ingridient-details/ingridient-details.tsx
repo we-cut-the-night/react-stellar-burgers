@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
 import style from "./ingridient-details.module.css";
 import { getIngredientDetails } from "services/selectors";
 import { FC } from "react";
+import { useAppSelector } from "hooks";
 
 const IngridientDetails: FC = () => {
-  const { ingredientDetails } = useSelector(getIngredientDetails);
+  const { ingredientDetails } = useAppSelector(getIngredientDetails);
 
   const ingridientValue = [
     {

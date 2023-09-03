@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import styles from './feed-orders.module.css';
 import FeedOrdersItem from './feed-orders-item/feed-orders-item';
-import { useSelector } from 'react-redux';
 import { getWSOrders } from 'services/selectors';
 import { IWSOrder } from 'utils/types';
+import { useAppSelector } from 'hooks';
 
 const FeedOrders: FC = () => {
-  const { data } = useSelector(getWSOrders);
+  const { data } = useAppSelector(getWSOrders);
   const ordersData = data && JSON.parse(data);
   const orders = ordersData.orders;
 

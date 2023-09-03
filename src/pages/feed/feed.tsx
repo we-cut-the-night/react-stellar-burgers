@@ -6,10 +6,10 @@ import {
   WS_CONNECTION_START,
   WS_CONNECTION_STOP,
 } from "services/actions/ws-actions";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "hooks";
 
 const Feed: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START });

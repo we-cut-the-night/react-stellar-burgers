@@ -3,17 +3,17 @@ import IngredientType from "./ingridient-type/ingridient-type";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingridients.module.css";
 import { ingridientTypes } from "../../utils/constants";
-import { IIngredientData, TStoreDispatch } from "../../utils/types";
-import { useSelector, useDispatch } from "react-redux";
+import { IIngredientData } from "../../utils/types";
 import { SET_INGRIDIENT_TAB } from "../../services/actions";
 import { getBurrentIngredients } from "services/selectors";
+import { useAppDispatch, useAppSelector } from "hooks";
 
 const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch<TStoreDispatch>();
-  const { ingredientsAll }: { ingredientsAll: IIngredientData[] } = useSelector(
+  const dispatch = useAppDispatch();
+  const { ingredientsAll }: { ingredientsAll: IIngredientData[] } = useAppSelector(
     getBurrentIngredients
   );
-  const { currentIngredientTab } = useSelector(getBurrentIngredients);
+  const { currentIngredientTab } = useAppSelector(getBurrentIngredients);
   const ingridientList = useRef<HTMLUListElement>(null);
   const bun = useRef<HTMLLIElement>(null);
   const sauce = useRef<HTMLLIElement>(null);

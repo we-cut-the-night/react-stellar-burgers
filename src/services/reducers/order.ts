@@ -9,7 +9,8 @@ export const makeOrder = (state = initialOrder, action: TApplicationActions) => 
     case ORDER_REQUEST: {
       return {
         ...state,
-        orderRequest: true
+        orderRequest: true,
+        isOpen: true,
       };
     }
     case ORDER_SUCCESS: {

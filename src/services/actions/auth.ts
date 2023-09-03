@@ -107,6 +107,14 @@ export const getUserData = (): AppThunkAction => {
     const accessToken = getCookies('accessToken')
     const refreshToken = localStorage.getItem('refreshToken')
     if (!accessToken && !refreshToken) {
+      dispatch({
+        type: SET_USER_DATA,
+        data: {
+          loggedIn: false,
+          email: '',
+          name: '',
+        }
+      });
       return
     }
     if (!accessToken && refreshToken) {
@@ -115,18 +123,30 @@ export const getUserData = (): AppThunkAction => {
           dispatch({
             type: SET_USER_DATA,
             data: {
+              loggedIn: true,
               email: res.user.email,
               name: res.user.name
             }
           });
         })
-        .catch(err => console.log(`Error(getUserData): ${err}`))
+        .catch(err => {
+          console.log(`Error(getUserData): ${err}`)
+          dispatch({
+            type: SET_USER_DATA,
+            data: {
+              loggedIn: false,
+              email: '',
+              name: '',
+            }
+          });
+        })
     }
     getUser('Bearer ' + accessToken)
       .then(res => {
         dispatch({
           type: SET_USER_DATA,
           data: {
+            loggedIn: true,
             email: res.user.email,
             name: res.user.name
           }
@@ -138,12 +158,23 @@ export const getUserData = (): AppThunkAction => {
             dispatch({
               type: SET_USER_DATA,
               data: {
+                loggedIn: true,
                 email: res.user.email,
                 name: res.user.name
               }
             });
           })
-          .catch(err => console.log(`Error(getUserData): ${err}`))
+          .catch(err => {
+            console.log(`Error(getUserData): ${err}`)
+            dispatch({
+              type: SET_USER_DATA,
+              data: {
+                loggedIn: false,
+                email: '',
+                name: '',
+              }
+            });
+          })
       )
   }
 }

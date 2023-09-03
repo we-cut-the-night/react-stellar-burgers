@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredientData, TStoreDispatch } from "utils/types";
-import { useDispatch, useSelector } from "react-redux";
+import { IIngredientData } from "utils/types";
 import { getBurrentIngredients } from "services/selectors";
 import styles from "./feed-orders-item.module.css";
 import { getOrderPrice } from "utils/functions";
 import { OPEN_ORDER_DETAILS } from "services/actions";
+import { useAppDispatch, useAppSelector } from "hooks";
 
 interface IFeedOrderItemProps {
   data: {
@@ -22,9 +22,9 @@ interface IFeedOrderItemProps {
 }
 
 const FeedOrdersItem: FC<IFeedOrderItemProps> = ({ data, type }) => {
-  const dispatch = useDispatch<TStoreDispatch>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
-  const { ingredientsAll } = useSelector(getBurrentIngredients);
+  const { ingredientsAll } = useAppSelector(getBurrentIngredients);
   const ingredientList = ingredientsAll?.filter((item) =>
     data?.ingredients.includes(item._id)
   );

@@ -1,13 +1,12 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./profile-navigation.module.css";
-import { useDispatch } from "react-redux";
 import { logout } from "services/actions/auth";
 import { FC, MouseEvent } from "react";
-import { AppDispatch } from "utils/types";
+import { useAppDispatch } from "hooks";
 
 const ProfileNavigation: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
 
   const handleLogOut = (event: MouseEvent<HTMLAnchorElement>) => {

@@ -48,6 +48,7 @@ export interface IPropsModal extends IPropsModalOverlay {
 
 export interface IPropsElement {
   element: any;
+  isNotAuth: boolean;
 }
 
 export interface IPropsConstructorItem {

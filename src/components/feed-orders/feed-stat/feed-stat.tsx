@@ -1,11 +1,11 @@
 import { FC } from "react";
 import styles from "./feed-stat.module.css";
 import { getWSOrders } from "services/selectors";
-import { useSelector } from "react-redux";
 import { IWSOrder } from "utils/types";
+import { useAppSelector } from "hooks";
 
 const FeedStat: FC = () => {
-  const { data } = useSelector(getWSOrders)
+  const { data } = useAppSelector(getWSOrders)
   const ordersData = data && JSON.parse(data)
   const ordersDone = ordersData?.orders?.filter(
     (item: IWSOrder) => item.status === "done"

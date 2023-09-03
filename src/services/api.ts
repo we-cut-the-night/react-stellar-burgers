@@ -7,6 +7,7 @@ import {
   ORDER_SUCCESS,
   RESET_INGREDIENTS,
   ORDER_FAIL,
+  ORDER_REQUEST,
 } from './actions/index'
 
 export const getIngredients = (): AppThunkAction => {
@@ -33,6 +34,9 @@ export const getIngredients = (): AppThunkAction => {
 
 export const handleOrder = (data: { ingredients: TIngredientList }): AppThunkAction => {
   return function(dispatch) {
+    dispatch({
+      type: ORDER_REQUEST,
+    })
     postOrder(data)
       .then(res => {
         if (res && res.success) {
