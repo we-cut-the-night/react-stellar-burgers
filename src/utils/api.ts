@@ -1,4 +1,5 @@
 import {BASE_URL} from './constants'
+import { getCookies } from './cookies';
 
 const headers = {
   'Content-Type': 'application/json',
@@ -8,7 +9,6 @@ const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json()
   }
-  // return Promise.reject(res);
   return res.json()
     .then((data) => {
       throw new Error(data.message)
@@ -24,9 +24,13 @@ export const getIngridientsData = () => {
 }
 
 export const postOrder = (data: object) => {
+  const accessToken = getCookies("accessToken") ?? '';
   return fetch(`${BASE_URL}/orders`, {
     method: 'POST',
-    headers: headers,
+    headers: {
+      ...headers,
+      authorization: 'Bearer ' + accessToken,
+    },
     body: JSON.stringify(data)
   })
     .then(checkResponse)

@@ -2,17 +2,16 @@ import { FC, FormEvent, useEffect } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useForm } from 'hooks/useForm'
-import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, resetPasswordEnd } from 'services/actions/auth'
 import { urls } from 'utils/constants'
 import styles from './reset-password.module.css'
-import { getStoreUserData } from 'services/selectors';
-import { TStoreDispatch } from 'utils/types';
+import { getStoreUserData } from 'services/selectors'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const ResetPassword: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch<TStoreDispatch>()
-  const { email } = useSelector(getStoreUserData)
+  const dispatch = useAppDispatch()
+  const { email } = useAppSelector(getStoreUserData)
   const { formValues, handleChange, isValid, errors, resetFormValues } = useForm({ password: '', code: '' })
 
   const handleFormSubmit = (event: FormEvent) => {

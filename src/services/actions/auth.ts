@@ -8,8 +8,9 @@ import {
   RESET_PASSWORD_START,
   RESET_PASSWORD_END
 } from "./index"
+import { IStringValues, AppThunkAction } from "utils/types"
 
-export const createUser = (data, navigate) => {
+export const createUser = (data: IStringValues, navigate: () => void): AppThunkAction => {
   return function (dispatch) {
     postAuth(data, "register")
       .then(res => {
@@ -34,7 +35,7 @@ export const createUser = (data, navigate) => {
   }
 }
 
-export const login = (data, navigate) => {
+export const login = (data: IStringValues, navigate: () => void): AppThunkAction => {
   return function (dispatch) {
     postAuth(data, "login")
       .then(res => {
@@ -59,7 +60,7 @@ export const login = (data, navigate) => {
   }
 }
 
-export const logout = (data, navigate) => {
+export const logout = (data: IStringValues, navigate: () => void): AppThunkAction => {
   return function (dispatch) {
     postAuth(data, "logout")
       .then(() => {
@@ -79,9 +80,9 @@ export const logout = (data, navigate) => {
   }
 }
 
-export const resetPasswordStart = (data, navigate) => {
+export const resetPasswordStart = (data: IStringValues, navigate: () => void): AppThunkAction => {
   return function (dispatch) {
-    postPassword(data, null)
+    postPassword(data, '')
       .then(() => {
         dispatch({ type: RESET_PASSWORD_START })
         navigate()
@@ -90,7 +91,7 @@ export const resetPasswordStart = (data, navigate) => {
   }
 }
 
-export const resetPasswordEnd = (data, navigate) => {
+export const resetPasswordEnd = (data: IStringValues, navigate: () => void): AppThunkAction => {
   return function (dispatch) {
     postPassword(data, "reset")
       .then(() => {
@@ -101,11 +102,19 @@ export const resetPasswordEnd = (data, navigate) => {
   }
 }
 
-export const getUserData = () => {
+export const getUserData = (): AppThunkAction => {
   return function (dispatch) {
     const accessToken = getCookies('accessToken')
     const refreshToken = localStorage.getItem('refreshToken')
     if (!accessToken && !refreshToken) {
+      dispatch({
+        type: SET_USER_DATA,
+        data: {
+          loggedIn: false,
+          email: '',
+          name: '',
+        }
+      });
       return
     }
     if (!accessToken && refreshToken) {
@@ -114,18 +123,30 @@ export const getUserData = () => {
           dispatch({
             type: SET_USER_DATA,
             data: {
+              loggedIn: true,
               email: res.user.email,
               name: res.user.name
             }
           });
         })
-        .catch(err => console.log(`Error(getUserData): ${err}`))
+        .catch(err => {
+          console.log(`Error(getUserData): ${err}`)
+          dispatch({
+            type: SET_USER_DATA,
+            data: {
+              loggedIn: false,
+              email: '',
+              name: '',
+            }
+          });
+        })
     }
     getUser('Bearer ' + accessToken)
       .then(res => {
         dispatch({
           type: SET_USER_DATA,
           data: {
+            loggedIn: true,
             email: res.user.email,
             name: res.user.name
           }
@@ -137,17 +158,28 @@ export const getUserData = () => {
             dispatch({
               type: SET_USER_DATA,
               data: {
+                loggedIn: true,
                 email: res.user.email,
                 name: res.user.name
               }
             });
           })
-          .catch(err => console.log(`Error(getUserData): ${err}`))
+          .catch(err => {
+            console.log(`Error(getUserData): ${err}`)
+            dispatch({
+              type: SET_USER_DATA,
+              data: {
+                loggedIn: false,
+                email: '',
+                name: '',
+              }
+            });
+          })
       )
   }
 }
 
-export const updateUserData = (data) => {
+export const updateUserData = (data: IStringValues): AppThunkAction => {
   return function (dispatch) {
     const token = 'Bearer ' + getCookies('accessToken')
     patchUser(data, token)
@@ -176,7 +208,7 @@ export const updateUserData = (data) => {
   }
 }
 
-const refreshTokenAndGetUser = async () => {
+export const refreshTokenAndGetUser = async (): Promise<any> => {
   const data = { token: localStorage.getItem('refreshToken') }
 
   if (data.token) {
@@ -203,7 +235,7 @@ const refreshTokenAndGetUser = async () => {
   }
 }
 
-const refreshTokenAndPatchUser = async (err, userData) => {
+const refreshTokenAndPatchUser = async (err: {status: number}, userData: IStringValues): Promise<any> => {
   if (err.status === 403) {
     const data = { token: localStorage.getItem('refreshToken') }
     deleteCookies('accessToken')

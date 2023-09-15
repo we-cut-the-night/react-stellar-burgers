@@ -1,24 +1,22 @@
-// import { useAuth } from '../services/auth';
-import { Navigate } from 'react-router-dom'
-import { useEffect, useState, FC } from 'react'
-import { getUserData } from 'services/actions/auth'
-import { useDispatch, useSelector } from 'react-redux'
-import { getStoreUserData } from 'services/selectors'
-import { IPropsElement, TStoreDispatch } from 'utils/types'
+import { Navigate, useLocation } from "react-router-dom";
+import { FC } from "react";
+import { getStoreUserData } from "services/selectors";
+import { IPropsElement } from "utils/types";
+import { useAppSelector } from "hooks";
 
-export const ProtectedRouteElement: FC<IPropsElement> = ({ element }) => {
-  const dispatch = useDispatch<TStoreDispatch>()
-  const [isUserLoaded, setUserLoaded] = useState(false)
-  const { email }: {email: string} = useSelector(getStoreUserData)
+export const ProtectedRouteElement: FC<IPropsElement> = ({ isNotAuth, element }) => {
+  const { loggedIn } = useAppSelector(getStoreUserData);
+  const location = useLocation();
 
-  useEffect(() => {
-    !email && dispatch(getUserData())
-    setUserLoaded(true)
-  }, [dispatch, email])
-
-  if (!isUserLoaded) {
-    return null;
+  if (isNotAuth && loggedIn) {
+    const { from } = location.state || { from: { pathname: "/" } };
+    return <Navigate to={from} />;
   }
 
-  return email ? element : <Navigate to="/login" replace/>
-}
+  if (!isNotAuth && !loggedIn) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+
+  return element;
+
+};

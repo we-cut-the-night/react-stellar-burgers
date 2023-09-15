@@ -1,35 +1,34 @@
-import { useState, useEffect, FC } from "react";
-import { ingridientTypes } from "../../utils/constants";
+import { useState, useEffect, FC } from "react"
+import { ingridientTypes } from "../../utils/constants"
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+} from "@ya.praktikum/react-developer-burger-ui-components"
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT } from "../../services/actions";
-import { handleOrder } from "../../services/api";
-import ConstructorItem from "./constructor-item/constructor-item";
-import styles from "./burger-constructor.module.css";
-import { useNavigate } from "react-router-dom";
-import { urls } from "../../utils/constants";
-import { getBurgerConstructor, getStoreUserData } from "services/selectors";
+import { ADD_INGREDIENT } from "../../services/actions"
+import { handleOrder } from "../../services/api"
+import ConstructorItem from "./constructor-item/constructor-item"
+import styles from "./burger-constructor.module.css"
+import { useNavigate } from "react-router-dom"
+import { urls } from "../../utils/constants"
+import { getBurgerConstructor, getStoreUserData } from "services/selectors"
 import {
-  IIngredientData,
   IIngredientDataWithTimeId,
-  TStoreDispatch,
 } from "utils/types";
+import { IStoreBurgerConstructor } from "services/reducers/types"
+import { useAppDispatch, useAppSelector } from "hooks"
 
 const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch<TStoreDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { constructor }: { constructor: IIngredientDataWithTimeId[] } =
-    useSelector(getBurgerConstructor);
-  const { loggedIn } = useSelector(getStoreUserData);
+  const { constructor }: IStoreBurgerConstructor =
+    useAppSelector(getBurgerConstructor);
+  const { loggedIn } = useAppSelector(getStoreUserData);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const handleDrop = (item: IIngredientData) => {
+  const handleDrop = (item: IIngredientDataWithTimeId) => {
     dispatch({
       type: ADD_INGREDIENT,
       item: item,
@@ -38,7 +37,7 @@ const BurgerConstructor: FC = () => {
 
   const handleOrderClick = () => {
     if (loggedIn) {
-      const ingredients = constructor.map((item: IIngredientData) => item._id);
+      const ingredients = constructor.map(item => item._id);
       dispatch(handleOrder({ ingredients }));
     } else {
       navigate(urls.login);
@@ -55,16 +54,16 @@ const BurgerConstructor: FC = () => {
     },
   });
 
-  const buns: IIngredientDataWithTimeId[] = constructor.filter(
+  const buns = constructor.filter(
     (item) => item.type === ingridientTypes[0].type
   );
-  const middle: IIngredientDataWithTimeId[] | [] = constructor.filter(
+  const middle = constructor.filter(
     (item) => item.type !== ingridientTypes[0].type
   );
 
   useEffect(() => {
     const priceMiddle: number = middle.reduce(
-      (sum: number, item: IIngredientDataWithTimeId) =>
+      (sum: number, item) =>
         (sum = sum + item.price),
       0
     );

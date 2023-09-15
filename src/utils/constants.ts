@@ -1,4 +1,5 @@
 export const BASE_URL = 'https://norma.nomoreparties.space/api'
+export const WS_URL = 'wss://norma.nomoreparties.space/orders'
 
 export const ingridientTypes = [
   {
@@ -25,6 +26,8 @@ export const urls = {
   orders: "/profile/orders",
   ordersId: "/profile/orders/:id",
   ingredientsId: "/ingredients/:id",
+  feed: "/feed",
+  feedId: "/feed/:id",
   notFound: "*",
 }
 // Иван Иванович

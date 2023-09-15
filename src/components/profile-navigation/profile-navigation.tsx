@@ -1,25 +1,27 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import styles from './profile-navigation.module.css'
-import { useDispatch } from 'react-redux'
-import { logout } from 'services/actions/auth'
-import { FC, MouseEvent } from 'react'
-import { TStoreDispatch } from 'utils/types'
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import styles from "./profile-navigation.module.css";
+import { logout } from "services/actions/auth";
+import { FC, MouseEvent } from "react";
+import { useAppDispatch } from "hooks";
 
 const ProfileNavigation: FC = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch<TStoreDispatch>()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
 
   const handleLogOut = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    const data = { token: localStorage.getItem('refreshToken') }
-    dispatch(logout(data, () => navigate('/login')))
-  }
+    event.preventDefault();
+    const token = localStorage.getItem("refreshToken");
+    const data = { token: token ? token : "" };
+    dispatch(logout(data, () => navigate("/login")));
+  };
 
   const getClassName = (isActive: boolean) => {
-    const defaultName = `${styles.navigationLink} text text_type_main-medium`
-    return !isActive ? defaultName : `${defaultName} ${styles.navigationLinkActive}`
-  }
-
+    const defaultName = `${styles.navigationLink} text text_type_main-medium`;
+    return !isActive
+      ? defaultName
+      : `${defaultName} ${styles.navigationLinkActive}`;
+  };
 
   return (
     <div className={styles.root}>
@@ -27,7 +29,7 @@ const ProfileNavigation: FC = () => {
         <div className={styles.navigationLinkWrapper}>
           <NavLink
             to="/profile"
-            className={({isActive}) => getClassName(isActive)}
+            className={({ isActive }) => getClassName(isActive)}
           >
             Профиль
           </NavLink>
@@ -35,7 +37,7 @@ const ProfileNavigation: FC = () => {
         <div className={styles.navigationLinkWrapper}>
           <NavLink
             to="/profile/orders"
-            className={({isActive}) => getClassName(isActive)}
+            className={({ isActive }) => getClassName(isActive)}
           >
             История заказов
           </NavLink>
@@ -43,7 +45,7 @@ const ProfileNavigation: FC = () => {
         <div className={styles.navigationLinkWrapper}>
           <NavLink
             to="/login"
-            className={({isActive}) => getClassName(isActive)}
+            className={({ isActive }) => getClassName(isActive)}
             onClick={handleLogOut}
           >
             Выход
@@ -53,10 +55,14 @@ const ProfileNavigation: FC = () => {
       <p
         className={`${styles.navigationComments} text text_type_main-default mt-20`}
       >
-        В этом разделе вы можете изменить свои персональные данные
+        {pathname === "/profile"
+          ? "В этом разделе вы можете изменить свои персональные данные"
+          : pathname === "/profile/orders"
+          ? "В этом разделе вы можете просмотреть свою историю заказов"
+          : ""}
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileNavigation
+export default ProfileNavigation;

@@ -7,14 +7,16 @@ import {
   RESET_INGREDIENTS,
 } from '../actions/index'
 import { v4 as uuidv4 } from 'uuid'
+import { TApplicationActions } from 'services/actions/types';
+import { IStoreBurgerConstructor } from './types';
 
-export const changeIngredients = (state = initialBurgerConstructor, action) => {
+export const changeIngredients = (state = initialBurgerConstructor, action: TApplicationActions): IStoreBurgerConstructor => {
   const timeId = uuidv4()
 
   switch (action.type) {
     case REMOVE_INGREDIENT: {
       return {
-        constructor: state.constructor.filter(item => item.timeId === action.id ? null : item)
+        constructor: state.constructor.filter((item)=> item.timeId === action.id ? null : item)
       }
     }
     case ADD_INGREDIENT: {
@@ -22,7 +24,7 @@ export const changeIngredients = (state = initialBurgerConstructor, action) => {
       if(action.item.type === typeBun) {
         return {
           constructor: [
-            ...state.constructor.filter(item => item.type === typeBun ? null : item), { ...action.item, timeId }
+            ...state.constructor.filter((item) => item.type === typeBun ? null : item), { ...action.item, timeId }
           ]
         }
       } else {

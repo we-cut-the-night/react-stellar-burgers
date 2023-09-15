@@ -1,16 +1,14 @@
 import { useRef, FC } from 'react'
-import { useDispatch } from 'react-redux'
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrop, useDrag } from 'react-dnd'
 import { UPDATE_INGREDIENTS, REMOVE_INGREDIENT } from '../../../services/actions'
 import styles from './constructor-item.module.css'
-import { IPropsConstructorItem, TStoreDispatch } from 'utils/types'
+import { IPropsConstructorItem } from 'utils/types'
+import { useAppDispatch } from 'hooks'
 
 const ConstructorItem: FC<IPropsConstructorItem> = ({ index, data, middle, buns }) => {
   const ref = useRef<HTMLLIElement>(null)
-  const dispatch = useDispatch<TStoreDispatch>()
-  // const middle = order.middle
-  // const buns = [order.buns]
+  const dispatch = useAppDispatch()
 
   function handleDeleteItem() {
     dispatch({

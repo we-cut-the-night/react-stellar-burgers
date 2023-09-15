@@ -1,14 +1,16 @@
 import { initialOrder } from '../initialData'
 import {
-  ORDER_CLOSE, ORDER_FAIL, ORDER_SUCCESS, ORDER_REQUEST
+  ORDER_CLOSE, ORDER_FAIL, ORDER_SUCCESS, ORDER_REQUEST, OPEN_ORDER_DETAILS
 } from '../actions'
+import { TApplicationActions } from 'services/actions/types';
 
-export const makeOrder = (state = initialOrder, action) => {
+export const makeOrder = (state = initialOrder, action: TApplicationActions) => {
   switch (action.type) {
     case ORDER_REQUEST: {
       return {
         ...state,
-        orderRequest: true
+        orderRequest: true,
+        isOpen: true,
       };
     }
     case ORDER_SUCCESS: {
@@ -29,10 +31,16 @@ export const makeOrder = (state = initialOrder, action) => {
     }
     case ORDER_CLOSE: {
       return {
-        order: {},
+        order: initialOrder.order,
         orderRequest: false,
         orderFail: false,
         isOpen: false
+      };
+    }
+    case OPEN_ORDER_DETAILS: {
+      return {
+        ...state,
+        isOpen: true
       };
     }
     default: { return state }

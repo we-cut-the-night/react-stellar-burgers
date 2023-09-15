@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunkAction, TIngredientList } from 'utils/types'
 import { getIngridientsData, postOrder } from '../utils/api'
 import {
   INGREDIENTS_ALL_REQUEST,
@@ -6,10 +7,11 @@ import {
   ORDER_SUCCESS,
   RESET_INGREDIENTS,
   ORDER_FAIL,
+  ORDER_REQUEST,
 } from './actions/index'
 
-export const getIngredients = () => {
-  return function (dispatch) {
+export const getIngredients = (): AppThunkAction => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: INGREDIENTS_ALL_REQUEST })
 
     getIngridientsData()
@@ -30,8 +32,11 @@ export const getIngredients = () => {
   }
 }
 
-export const handleOrder = (data) => {
+export const handleOrder = (data: { ingredients: TIngredientList }): AppThunkAction => {
   return function(dispatch) {
+    dispatch({
+      type: ORDER_REQUEST,
+    })
     postOrder(data)
       .then(res => {
         if (res && res.success) {

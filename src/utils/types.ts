@@ -1,5 +1,18 @@
 import { store } from 'index';
 import { ReactNode } from 'react';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { TApplicationActions } from 'services/actions/types';
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
+export type AppThunkAction<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  TApplicationActions
+>;
+
+export type TIngredientList = string[];
 
 export interface IIngredientData {
   readonly _id: string,
@@ -16,7 +29,7 @@ export interface IIngredientData {
 }
 
 export interface IIngredientDataWithTimeId extends IIngredientData {
-  timeId: number;
+  timeId: string;
 }
 
 export type TStoreDispatch = typeof store.dispatch;
@@ -35,6 +48,7 @@ export interface IPropsModal extends IPropsModalOverlay {
 
 export interface IPropsElement {
   element: any;
+  isNotAuth: boolean;
 }
 
 export interface IPropsConstructorItem {
@@ -48,4 +62,19 @@ export interface IPropsIngridientType {
   id: string;
   title: string;
   items: IIngredientData[];
+}
+
+export interface IOrder {
+  readonly id: string;
+  readonly number: number;
+}
+
+export interface IWSOrder {
+  readonly _id: string;
+  readonly ingredients: string[];
+  readonly status: string;
+  readonly name: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly number: number;
 }

@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import styles from './ingredient-details.module.css'
 import { getBurrentIngredients } from 'services/selectors'
 import { FC } from 'react'
 import { IIngredientData } from 'utils/types'
+import { useAppSelector } from 'hooks'
 
 const IngredientDetails: FC = () => {
   const { id } = useParams()
-  const { ingredientsAll }: {ingredientsAll: IIngredientData[]} = useSelector(getBurrentIngredients)
+  const { ingredientsAll }: {ingredientsAll: IIngredientData[]} = useAppSelector(getBurrentIngredients)
   const currentIngredient: IIngredientData = ingredientsAll?.filter(item => item._id === id)[0]
 
   return (
