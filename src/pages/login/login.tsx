@@ -51,6 +51,7 @@ const Login: FC = () => {
               value={formValues.email}
               onChange={handleChange}
               error={Boolean(errors.email)}
+              data-cy='loginSubmit'
             />
           </div>
           <div className={`${Boolean(errors.password) ? "mb-0" : "mb-6"}`}>
@@ -59,6 +60,7 @@ const Login: FC = () => {
               placeholder={'Пароль'}
               value={formValues.password}
               onChange={handleChange}
+              data-cy='pwdSubmit'
             />
           </div>
           <div className={styles.buttonSubmit}>
@@ -67,6 +69,7 @@ const Login: FC = () => {
               htmlType="submit"
               disabled={!isValid}
               size="large"
+              data-cy='submitLoginForm'
             >
               Войти
             </Button>
