@@ -1,3 +1,4 @@
+import { initialWSOrders as initialState } from "services/initialData";
 import { getWSOrders, getWSUserOrders } from "./ws-orders";
 import {
   WS_AUTH_CONNECTION_CLOSED,
@@ -13,11 +14,6 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_GET_MESSAGE,
 } from "services/actions/ws-actions";
-
-const initialState = {
-  connected: false,
-  data: ''
-}
 
 const mockPayloadData = {
   isTrusted: true

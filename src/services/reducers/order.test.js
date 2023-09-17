@@ -1,15 +1,6 @@
 import { ORDER_CLOSE, ORDER_FAIL, ORDER_SUCCESS, ORDER_REQUEST, OPEN_ORDER_DETAILS } from "services/actions"
 import { makeOrder } from "./order";
-
-const initialState = {
-  order: {
-    id: '',
-    number: 0
-  },
-  orderRequest: false,
-  orderFail: false,
-  isOpen: false
-}
+import { initialOrder as initialState } from "services/initialData";
 
 const mockOrderData = {
   number: 6167

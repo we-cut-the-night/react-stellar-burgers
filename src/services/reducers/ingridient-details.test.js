@@ -1,22 +1,6 @@
 import { OPEN_INGREDIENT_DETAILS, CLOSE_INGREDIENT_DETAILS } from "services/actions"
 import { ingredientDetails } from "./ingridient-details"
-
-const initialState = {
-  ingredientDetails: {
-    _id: '',
-    type: '',
-    name: '',
-    price: 0,
-    image: '',
-    image_mobile: '',
-    image_large: '',
-    calories: 0,
-    carbohydrates: 0,
-    proteins: 0,
-    fat: 0
-  },
-  isOpen: false
-}
+import { initialIngredientDetails as initialState } from "services/initialData";
 
 const mockIngredientDetails = {
   _id: '643d69a5c3f7b9001cfa0942',

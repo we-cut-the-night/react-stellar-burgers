@@ -5,7 +5,7 @@ const mockOrder = [
 
 describe('service is available', function () {
   before(function() {
-    cy.visit('http://localhost:3000');
+    cy.visit('/');
     cy.viewport(1920, 1024);
   });
 

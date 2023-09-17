@@ -6,13 +6,7 @@ import {
   RESET_PASSWORD_END
 } from "services/actions"
 import { setUserData } from "./current-user";
-
-const initialState = {
-  loggedIn: false,
-  email: "",
-  name: "",
-  resetPassword: false,
-}
+import { initialUserData as initialState} from "services/initialData";
 
 const mockUserData = {
   email: 'ivanthecreator@gmail.com',

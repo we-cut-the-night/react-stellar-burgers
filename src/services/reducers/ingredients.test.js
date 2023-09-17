@@ -5,13 +5,7 @@ import {
   SET_INGRIDIENT_TAB,
 } from "services/actions"
 import { getIngredientsAll } from "./ingredients"
-
-const initialState = {
-  ingredientsAll: [],
-  ingredientsAllRequest: false,
-  ingredientsAllFail: false,
-  currentIngredientTab: 'bun'
-}
+import { initialBurgerIngredients as initialState } from "services/initialData"
 
 const mockTabData = 'sauce'
 
