@@ -1,6 +1,0 @@
-.ingridientList {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px 24px;
-  list-style: none;
-}
