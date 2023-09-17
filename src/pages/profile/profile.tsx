@@ -72,7 +72,6 @@ const Profile: FC = () => {
     if (loggedIn) {
       resetFormValues({ name: name, email: email, password: '' })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetFormValues, name, email])
 
   return (
