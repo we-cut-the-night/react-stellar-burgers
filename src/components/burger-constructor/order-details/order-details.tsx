@@ -16,7 +16,7 @@ const OrderDetails: FC = () => {
         </div>
       ) : (
         <>
-          <h2 className="text text_type_digits-large">{order.number}</h2>
+          <h2 className="text text_type_digits-large" data-cy="orderNumber">{order.number}</h2>
           <p className="mt-8 mb-15 text text_type_main-medium">
             идентификатор заказа
           </p>

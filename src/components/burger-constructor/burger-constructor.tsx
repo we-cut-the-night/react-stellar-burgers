@@ -78,6 +78,7 @@ const BurgerConstructor: FC = () => {
       className={`${styles.burgerConstructor} pt-25 ${
         isHover && styles.burgerConstructorHovering
       }`}
+      data-cy="burgerConstructor"
     >
       {!constructor.length && (
         <p
@@ -131,6 +132,7 @@ const BurgerConstructor: FC = () => {
           size="large"
           onClick={handleOrderClick}
           disabled={!totalPrice}
+          data-cy='submitConstructorForm'
         >
           Оформить заказ
         </Button>

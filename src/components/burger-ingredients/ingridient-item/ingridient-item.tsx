@@ -45,6 +45,7 @@ const IngredientItem: FC<{ item: IIngredientData }> = ({ item }) => {
         ref={dragRef}
         className={style.ingridientItem}
         onClick={handleClickItem}
+        data-cy={`dragableIngredients-${id}`}
       >
         {amount > 0 && (
           <Counter

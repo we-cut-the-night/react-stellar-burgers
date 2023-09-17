@@ -34,7 +34,6 @@ const OrdersHistory: FC = () => {
     return () => {
       dispatch({ type: WS_AUTH_CONNECTION_STOP });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
